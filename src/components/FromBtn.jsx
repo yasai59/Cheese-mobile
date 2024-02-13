@@ -2,11 +2,7 @@ import React from "react";
 import { Text, TouchableHighlight, View, Alert } from "react-native";
 import tw from "../../twrnc";
 
-export const FromBtn = ({ title, className }) => {
-  const handlePress = () => {
-    Alert.alert("Button pressed");
-  };
-
+export const FormBtn = ({ title, className, handlePress }) => {
   return (
     <TouchableHighlight underlayColor="black" onPress={handlePress}>
       <View style={tw`bg-primary rounded-lg p-2 ${className}`}>
