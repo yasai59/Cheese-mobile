@@ -1,5 +1,5 @@
 import React from "react";
-import { Text, TouchableHighlight, View, Alert } from "react-native";
+import { Text, TouchableHighlight, View } from "react-native";
 import tw from "../../twrnc";
 
 export const FormBtn = ({ title, className, handlePress }) => {
