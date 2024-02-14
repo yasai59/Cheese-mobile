@@ -28,7 +28,7 @@ export const LoginScreen = ({ navigation }) => {
   };
 
   const handleForgotPassword = () => {
-    alert("Forgot password");
+    navigation.navigate("recoverPassword");
   };
 
   return (
