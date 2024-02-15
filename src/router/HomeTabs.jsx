@@ -17,7 +17,7 @@ const Home = () => {
       }}
     >
       <Text>Home</Text>
-      <StatusBar style="dark" />
+      <StatusBar style="light" />
     </View>
   );
 };
@@ -38,7 +38,7 @@ const Profile = () => {
           logout();
         }}
       />
-      <StatusBar style="dark" />
+      <StatusBar style="light" />
     </View>
   );
 };

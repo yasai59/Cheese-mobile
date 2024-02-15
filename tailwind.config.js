@@ -4,6 +4,10 @@ const plugin = require("tailwindcss/plugin");
 module.exports = {
   content: [],
   theme: {
+    fontFamily: {
+      sans: ["Inter", "sans-serif"],
+      title: ["Anton", "sans-serif"],
+    },
     extend: {
       colors: {
         primary: "#FFD100",
@@ -30,6 +34,7 @@ module.exports = {
           "--base-light": "#515451",
         },
         ".input": "text-white",
+        html: "font-sans",
       });
     }),
   ],

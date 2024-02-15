@@ -24,7 +24,7 @@ export const LoginScreen = ({ navigation }) => {
   };
 
   const handleRegister = () => {
-    alert("Register");
+    navigation.navigate("register");
   };
 
   const handleForgotPassword = () => {

@@ -1,20 +1,29 @@
 import { NavigationContainer } from "@react-navigation/native";
-import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import { useContext } from "react";
 import { AppContext } from "../context/AppContext";
 import { HomeTabs } from "./HomeTabs";
 import { LoginScreen } from "../screens/LoginScreen";
 import { RecoverPassword } from "../screens/RecoverPassword";
+import tw from "../../twrnc";
+import { createNativeStackNavigator } from "@react-navigation/native-stack";
+import { SignUpScreen } from "../screens/SignUpScreen";
 
 export const AppRouter = () => {
-  const Stack = createNativeStackNavigator();
   const { isLogged } = useContext(AppContext);
+  const Stack = createNativeStackNavigator();
 
   return (
     <NavigationContainer>
       <Stack.Navigator>
         {isLogged ? (
-          <Stack.Screen name="Cheese" component={HomeTabs} />
+          <Stack.Screen
+            name="Cheese"
+            component={HomeTabs}
+            options={{
+              headerStyle: tw`bg-base-dark`,
+              headerTitleStyle: tw`text-primary font-bold text-3xl font-title`,
+            }}
+          />
         ) : (
           <>
             <Stack.Screen
@@ -26,6 +35,11 @@ export const AppRouter = () => {
               name="recoverPassword"
               options={{ headerShown: false }}
               component={RecoverPassword}
+            />
+            <Stack.Screen
+              name="register"
+              options={{ headerShown: false }}
+              component={SignUpScreen}
             />
           </>
         )}
