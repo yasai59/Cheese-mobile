@@ -3,12 +3,11 @@ import { TouchableHighlight, View } from "react-native";
 import tw from "../../twrnc";
 import { Feather } from "@expo/vector-icons";
 
-export const Checkbox = ({ checked, setChecked }) => {
+export const Checkbox = ({ checked, setChecked, className }) => {
   const handlePress = () => {
     setPressed(!pressed);
     if (setChecked) setChecked(!pressed);
   };
-  const className = "";
 
   const [pressed, setPressed] = useState(checked);
 
@@ -16,7 +15,7 @@ export const Checkbox = ({ checked, setChecked }) => {
     <TouchableHighlight
       underlayColor="black"
       onPress={handlePress}
-      style={tw`border-2 border-base-light rounded-lg p-2 w-10 h-10 ${
+      style={tw`border-2 border-base-light rounded-lg p-2 w-12 h-12 ${
         pressed ? "bg-base-light" : ""
       } ${className}`}
     >

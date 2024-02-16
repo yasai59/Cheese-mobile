@@ -5,6 +5,7 @@ import tw from "../../twrnc";
 import { Input } from "../components/Input";
 import { FormBtn } from "../components/FormBtn";
 import { Checkbox } from "../components/Checkbox";
+import axios from "axios";
 export const SignUpScreen = ({ navigation }) => {
   const inset = useSafeAreaInsets();
   const handleBack = () => {
@@ -18,6 +19,38 @@ export const SignUpScreen = ({ navigation }) => {
   const [terms, setTerms] = useState(false);
   const [news, setNews] = useState(false);
   const [restaurant, setRestaurant] = useState(false);
+
+  const handleRegister = () => {
+    if (!terms) return alert("You must accept terms & conditions");
+
+    if (password !== repeat) return alert("Passwords do not match");
+
+    if (!username || !email || !repeat || !password)
+      return alert("All fields are required");
+
+    const emailValid = /^\S+@\S+\.\S+$/.test(email);
+
+    if (!emailValid) return alert("Invalid email");
+
+    axios
+      .post("/api/user", {
+        user: {
+          username,
+          email,
+          password,
+          role_id: restaurant ? 2 : 1,
+        },
+      })
+      .then((res) => {
+        alert("User created successfully");
+        navigation.goBack();
+      })
+      .catch((err) => {
+        alert(err.response.data.message);
+      });
+
+    console.log("Register");
+  };
 
   return (
     <View
@@ -66,10 +99,31 @@ export const SignUpScreen = ({ navigation }) => {
             setRepeat(text);
           }}
         />
-        <Checkbox checked={terms} setChecked={setTerms} />
-        <Checkbox checked={news} setChecked={setNews} />
-        <Checkbox checked={restaurant} setChecked={setRestaurant} />
-        <FormBtn title={"Register"} className={"mt-10"} />
+        <View style={tw`flex flex-row justify-between items-center mt-5`}>
+          <Checkbox checked={terms} setChecked={setTerms} />
+          <Text style={tw`text-light text-right`}>
+            I accept{" "}
+            <Text style={tw`text-primary underline`}>terms & conditions</Text>{" "}
+            of privacy
+          </Text>
+        </View>
+        <View style={tw`flex flex-row justify-between items-center mt-5`}>
+          <Checkbox checked={news} setChecked={setNews} />
+          <Text style={tw`text-light text-right`}>
+            I would like to receive news about this service
+          </Text>
+        </View>
+        <View style={tw`flex flex-row justify-between items-center mt-5`}>
+          <Checkbox checked={restaurant} setChecked={setRestaurant} />
+          <Text style={tw`text-light text-right`}>
+            I want to create an account only for managing a restaurant
+          </Text>
+        </View>
+        <FormBtn
+          title={"Register"}
+          className={"mt-10"}
+          handlePress={handleRegister}
+        />
       </View>
     </View>
   );
