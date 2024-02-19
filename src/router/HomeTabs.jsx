@@ -2,10 +2,6 @@ import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { StatusBar } from "expo-status-bar";
 import { Text, View } from "react-native";
 import tw from "../../twrnc";
-import { useSafeAreaInsets } from "react-native-safe-area-context";
-import { FormBtn } from "../components/FormBtn";
-import { useContext } from "react";
-import { AppContext } from "../context/AppContext";
 import { ProfileScreen } from "../screens/private/ProfileScreen";
 
 const Tab = createBottomTabNavigator();
@@ -25,7 +21,18 @@ const Home = () => {
 
 export const HomeTabs = () => {
   return (
-    <Tab.Navigator>
+    <Tab.Navigator
+      screenOptions={{
+        tabBarStyle: {
+          ...tw`bg-base-dark border-t border-base-light`,
+        },
+        tabBarActiveTintColor: "#fff",
+        tabBarInactiveTintColor: "#999",
+        tabBarIcon: ({ focused, color, size }) => {
+          return <Text>Hola</Text>;
+        },
+      }}
+    >
       <Tab.Screen
         name="Home"
         component={Home}

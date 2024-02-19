@@ -16,7 +16,6 @@ export const LoginScreen = ({ navigation }) => {
 
   getData("token").then((token) => {
     if (!token) return;
-    console.log(token);
     changeToken(token);
   });
 

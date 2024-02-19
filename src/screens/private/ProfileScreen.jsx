@@ -10,11 +10,9 @@ export const ProfileScreen = () => {
 
   return (
     <View
-      style={{
-        ...tw`flex-1`,
-      }}
+      style={tw`flex-1 flex items-center bg-base-dark border-t border-base-light`}
     >
-      <Text>profile</Text>
+      <Text style={tw`text-light`}>profile</Text>
       <FormBtn
         title={"Log out"}
         handlePress={() => {
