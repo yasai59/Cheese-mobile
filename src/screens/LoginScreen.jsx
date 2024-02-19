@@ -6,12 +6,19 @@ import { useContext, useState } from "react";
 import tw from "../../twrnc";
 import { AppContext } from "../context/AppContext";
 import { LoginGoogle } from "../components/LoginGoogle";
+import { getData } from "../storage/storageManager";
 
 export const LoginScreen = ({ navigation }) => {
-  const { login } = useContext(AppContext);
+  const { login, changeToken } = useContext(AppContext);
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
+
+  getData("token").then((token) => {
+    if (!token) return;
+    console.log(token);
+    changeToken(token);
+  });
 
   const handlePress = () => {
     login(username, password)

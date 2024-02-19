@@ -48,8 +48,6 @@ export const SignUpScreen = ({ navigation }) => {
       .catch((err) => {
         alert(err.response.data.message);
       });
-
-    console.log("Register");
   };
 
   return (

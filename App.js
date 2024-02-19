@@ -1,6 +1,6 @@
 import axios from "axios";
 import { SafeAreaProvider } from "react-native-safe-area-context";
-import { useCallback } from "react";
+import { useCallback, useContext } from "react";
 import { AppProvider } from "./src/context/AppProvider";
 import { AppRouter } from "./src/router/AppRouter";
 import { View } from "react-native";
@@ -11,7 +11,7 @@ import * as SplashScreen from "expo-splash-screen";
 // SplashScreen.preventAutoHideAsync();
 
 export default function App() {
-  axios.defaults.baseURL = "https://apicheese.yasai59.com";
+  axios.defaults.baseURL = "http://192.168.209.83:3000";
 
   const [fontsLoaded, fontError] = useFonts({
     Anton: require("./assets/fonts/Anton.ttf"),

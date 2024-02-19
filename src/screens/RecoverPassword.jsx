@@ -4,6 +4,7 @@ import tw from "../../twrnc";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { Input } from "../components/Input";
 import { FormBtn } from "../components/FormBtn";
+import axios from "axios";
 
 export const RecoverPassword = ({ navigation }) => {
   const inset = useSafeAreaInsets();
@@ -11,6 +12,22 @@ export const RecoverPassword = ({ navigation }) => {
 
   const handleBack = () => {
     navigation.goBack();
+  };
+
+  const handleRecover = () => {
+    axios
+      .post("/api/user/forgot-password", { email })
+      .then(() => {
+        alert("Verification email sent");
+        setEmail("");
+      })
+      .catch((e) => {
+        if (e.response.status === 400) {
+          alert("No account with that email exists");
+          return;
+        }
+        alert("Error connecting to the server");
+      });
   };
 
   return (
@@ -37,7 +54,11 @@ export const RecoverPassword = ({ navigation }) => {
             setEmail(text);
           }}
         />
-        <FormBtn title={"Recover"} className={"font-bold"} />
+        <FormBtn
+          title={"Recover"}
+          className={"font-bold"}
+          handlePress={handleRecover}
+        />
         <Text style={tw`text-base-light mt-5`}>
           If an account with that mail exists we will send you a link to recover
           your account
