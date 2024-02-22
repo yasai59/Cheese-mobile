@@ -14,8 +14,9 @@ export const AppProvider = ({ children }) => {
     }
     try {
       const res = await axios.post("/api/user/login", { username, password });
-      setToken(res.data.token);
+      console.log(res.data);
       setUser(res.data.user);
+      setToken(res.data.token);
       axios.defaults.headers.common["x-token"] = `${res.data.token}`;
       storeData("token", res.data.token);
       storeData("user", JSON.stringify(res.data.user));

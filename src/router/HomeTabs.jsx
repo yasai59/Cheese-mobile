@@ -5,6 +5,8 @@ import tw from "../../twrnc";
 import { ProfileScreen } from "../screens/private/ProfileScreen";
 import { Ionicons } from "@expo/vector-icons";
 import { TouchableHighlight } from "react-native";
+import { useContext } from "react";
+import { AppContext } from "../context/AppContext";
 
 const Tab = createBottomTabNavigator();
 
@@ -22,6 +24,8 @@ const Home = () => {
 };
 
 function MyTabBar({ state, descriptors, navigation }) {
+  const { user } = useContext(AppContext);
+
   return (
     <View style={tw`flex-row`}>
       {state.routes.map((route, index) => {
@@ -76,7 +80,11 @@ function MyTabBar({ state, descriptors, navigation }) {
             style={tw`flex-1 bg-base-dark h-12 border-t border-base-light justify-center items-center`}
             key={label}
           >
-            <Ionicons name={`${icons[label]}`} color={color} size={24} />
+            <Ionicons
+              name={`${icons[label]}`}
+              color={color}
+              size={user.role_id === 2 ? 24 : 30}
+            />
           </TouchableHighlight>
         );
       })}
@@ -85,6 +93,8 @@ function MyTabBar({ state, descriptors, navigation }) {
 }
 
 export const HomeTabs = ({ navigation }) => {
+  const { user } = useContext(AppContext);
+
   return (
     <Tab.Navigator
       tabBar={(props) => <MyTabBar {...props} />}
@@ -106,11 +116,15 @@ export const HomeTabs = ({ navigation }) => {
         component={Home}
         options={{ headerShown: false }}
       />
-      <Tab.Screen
-        name="Restaurants"
-        component={Home}
-        options={{ headerShown: false }}
-      />
+      {user.role_id === 2 ? (
+        <Tab.Screen
+          name="Restaurants"
+          component={Home}
+          options={{ headerShown: false }}
+        />
+      ) : (
+        <></>
+      )}
       <Tab.Screen
         name="Favorites"
         component={Home}

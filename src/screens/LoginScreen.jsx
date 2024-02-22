@@ -14,14 +14,13 @@ export const LoginScreen = ({ navigation }) => {
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
 
-  getData("token").then((token) => {
-    if (!token) return;
-    changeToken(token);
-  });
-
   getData("user").then((user) => {
     if (!user) return;
     setUser(JSON.parse(user));
+    getData("token").then((token) => {
+      if (!token) return;
+      changeToken(token);
+    });
   });
 
   const handlePress = () => {
