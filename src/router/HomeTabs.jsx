@@ -3,6 +3,8 @@ import { StatusBar } from "expo-status-bar";
 import { Text, View } from "react-native";
 import tw from "../../twrnc";
 import { ProfileScreen } from "../screens/private/ProfileScreen";
+import { Ionicons } from "@expo/vector-icons";
+import { TouchableHighlight } from "react-native";
 
 const Tab = createBottomTabNavigator();
 
@@ -10,27 +12,88 @@ const Home = () => {
   return (
     <View
       style={{
-        ...tw`flex-1`,
+        ...tw`flex-1 bg-base-dark border-t border-base-light`,
       }}
     >
-      <Text>Home</Text>
+      <Text style={tw`text-light`}>Home</Text>
       <StatusBar style="light" />
     </View>
   );
 };
 
-export const HomeTabs = () => {
+function MyTabBar({ state, descriptors, navigation }) {
+  return (
+    <View style={tw`flex-row`}>
+      {state.routes.map((route, index) => {
+        const { options } = descriptors[route.key];
+        const label =
+          options.tabBarLabel !== undefined
+            ? options.tabBarLabel
+            : options.title !== undefined
+            ? options.title
+            : route.name;
+
+        const isFocused = state.index === index;
+
+        const onPress = () => {
+          const event = navigation.emit({
+            type: "tabPress",
+            target: route.key,
+            canPreventDefault: true,
+          });
+
+          if (!isFocused && !event.defaultPrevented) {
+            navigation.navigate(route.name, route.params);
+          }
+        };
+
+        const onLongPress = () => {
+          navigation.emit({
+            type: "tabLongPress",
+            target: route.key,
+          });
+        };
+
+        const color = tw`text-${isFocused ? "light" : "base-light"}`["color"];
+
+        const icons = {
+          Home: "home",
+          History: "heart",
+          Restaurants: "restaurant",
+          Favorites: "star",
+          Profile: "person",
+        };
+
+        return (
+          <TouchableHighlight
+            underlayColor="black"
+            accessibilityRole="button"
+            accessibilityState={isFocused ? { selected: true } : {}}
+            accessibilityLabel={options.tabBarAccessibilityLabel}
+            testID={options.tabBarTestID}
+            onPress={onPress}
+            onLongPress={onLongPress}
+            style={tw`flex-1 bg-base-dark h-12 border-t border-base-light justify-center items-center`}
+            key={label}
+          >
+            <Ionicons name={`${icons[label]}`} color={color} size={24} />
+          </TouchableHighlight>
+        );
+      })}
+    </View>
+  );
+}
+
+export const HomeTabs = ({ navigation }) => {
   return (
     <Tab.Navigator
+      tabBar={(props) => <MyTabBar {...props} />}
       screenOptions={{
         tabBarStyle: {
           ...tw`bg-base-dark border-t border-base-light`,
         },
         tabBarActiveTintColor: "#fff",
         tabBarInactiveTintColor: "#999",
-        tabBarIcon: ({ focused, color, size }) => {
-          return <Text>Hola</Text>;
-        },
       }}
     >
       <Tab.Screen
@@ -44,7 +107,7 @@ export const HomeTabs = () => {
         options={{ headerShown: false }}
       />
       <Tab.Screen
-        name="restaurants"
+        name="Restaurants"
         component={Home}
         options={{ headerShown: false }}
       />
@@ -54,7 +117,7 @@ export const HomeTabs = () => {
         options={{ headerShown: false }}
       />
       <Tab.Screen
-        name="profile"
+        name="Profile"
         component={ProfileScreen}
         options={{ headerShown: false }}
       />

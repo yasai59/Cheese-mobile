@@ -9,7 +9,7 @@ import { LoginGoogle } from "../components/LoginGoogle";
 import { getData } from "../storage/storageManager";
 
 export const LoginScreen = ({ navigation }) => {
-  const { login, changeToken } = useContext(AppContext);
+  const { login, changeToken, setUser } = useContext(AppContext);
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
@@ -17,6 +17,11 @@ export const LoginScreen = ({ navigation }) => {
   getData("token").then((token) => {
     if (!token) return;
     changeToken(token);
+  });
+
+  getData("user").then((user) => {
+    if (!user) return;
+    setUser(JSON.parse(user));
   });
 
   const handlePress = () => {

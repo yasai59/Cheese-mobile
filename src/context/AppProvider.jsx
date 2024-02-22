@@ -5,7 +5,8 @@ import { removeData, storeData } from "../storage/storageManager";
 
 export const AppProvider = ({ children }) => {
   const [token, setToken] = useState(null);
-  const isLogged = token !== null;
+  const [user, setUser] = useState(null);
+  const isLogged = !!token;
 
   const login = async (username, password) => {
     if (!username || !password) {
@@ -14,8 +15,10 @@ export const AppProvider = ({ children }) => {
     try {
       const res = await axios.post("/api/user/login", { username, password });
       setToken(res.data.token);
+      setUser(res.data.user);
       axios.defaults.headers.common["x-token"] = `${res.data.token}`;
       storeData("token", res.data.token);
+      storeData("user", JSON.stringify(res.data.user));
     } catch (e) {
       return e.response.data.message;
     }
@@ -28,13 +31,15 @@ export const AppProvider = ({ children }) => {
 
   const logout = () => {
     removeData("token");
+    removeData("user");
     axios.defaults.headers.common["x-token"] = null;
     setToken(null);
+    setUser(null);
   };
 
   return (
     <AppContext.Provider
-      value={{ token, login, logout, isLogged, changeToken }}
+      value={{ token, login, user, setUser, logout, isLogged, changeToken }}
     >
       {children}
     </AppContext.Provider>
