@@ -7,9 +7,16 @@ import { InvisibleInput } from "../../components/InvisibleInput";
 import { Option } from "../../components/Option";
 import { OptionButton } from "../../components/OptionButton";
 import { ScrollView } from "react-native";
+import { useNavigation } from "@react-navigation/native";
 
 export const ProfileScreen = () => {
   const { logout, user } = useContext(AppContext);
+
+  const navigate = useNavigation();
+
+  const handleChangePassword = () => {
+    navigate.navigate("ChangePassword");
+  };
 
   return (
     <ScrollView style={tw`flex-1 flex bg-base-dark border-t border-base-light`}>
@@ -24,8 +31,12 @@ export const ProfileScreen = () => {
         value={user.username}
         className={"text-3xl self-center mb-5"}
       />
-      <Option title={"Email"} value={user.email} />
-      <Option title={"Password"} value={"********"} />
+      <Option title={"Email"} value={user.email} showBtn={false} />
+      <Option
+        title={"Password"}
+        value={"********"}
+        onPress={handleChangePassword}
+      />
       <Option title={"Tastes"} value={"********"} />
       <Option title={"Restrictions"} value={"********"} />
       <OptionButton
