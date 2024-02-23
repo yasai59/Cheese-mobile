@@ -9,10 +9,8 @@ import axios from "axios";
 export const ChangePassword = ({ navigation }) => {
   const inset = useSafeAreaInsets();
   const [currentPass, setCurrentPass] = useState("");
-  const [newPass, setNewPass] = useState;
+  const [newPass, setNewPass] = useState("");
   const [repeatPass, setRepeatPass] = useState("");
-
-  const { user, setUser } = useContext(AppContext);
 
   const handleBack = () => {
     navigation.goBack();
@@ -23,11 +21,14 @@ export const ChangePassword = ({ navigation }) => {
       alert("Passwords do not match");
       return;
     }
-
     try {
-      const res = await axios.put("/api/user", user);
-      setUser(res.data);
+      const res = await axios.post("/api/user/change-password", {
+        oldPassword: currentPass,
+        newPassword: newPass,
+      });
+      navigation.goBack();
     } catch (e) {
+      console.log(e.response.data.message);
       alert("Error changing the password");
     }
   };
