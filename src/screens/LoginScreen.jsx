@@ -17,7 +17,7 @@ export const LoginScreen = ({ navigation }) => {
   getData("user").then((user) => {
     if (!user) return;
     setUser(JSON.parse(user));
-    getData("token").then((token) => {
+    getData("token").then(async (token) => {
       if (!token) return;
       changeToken(token);
     });

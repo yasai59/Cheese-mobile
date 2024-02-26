@@ -7,7 +7,8 @@
     "android": "expo run:android",
     "ios": "expo run:ios",
     "web": "expo start --web",
-    "build": "./build.sh"
+    "build": "./build.sh",
+    "build:install": "./install.sh"
   },
   "dependencies": {
     "@expo/vector-icons": "^14.0.0",
@@ -20,15 +21,18 @@
     "@rneui/themed": "^4.0.0-rc.8",
     "axios": "^1.6.7",
     "expo": "~50.0.5",
+    "expo-document-picker": "~11.10.1",
+    "expo-file-system": "^16.0.6",
     "expo-font": "~11.10.2",
     "expo-splash-screen": "~0.26.4",
     "expo-status-bar": "~1.11.1",
     "react": "18.2.0",
     "react-native": "0.73.2",
+    "react-native-document-picker": "^9.1.1",
     "react-native-ionicons": "^4.6.5",
     "react-native-safe-area-context": "^4.8.2",
     "react-native-screens": "~3.29.0",
-    "twrnc": "^3.6.8"
+    "twrnc": "^4.0.0"
   },
   "devDependencies": {
     "@babel/core": "^7.20.0",
