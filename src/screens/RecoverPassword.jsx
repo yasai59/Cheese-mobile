@@ -26,7 +26,9 @@ export const RecoverPassword = ({ navigation }) => {
           alert("No account with that email exists");
           return;
         }
-        alert("Error connecting to the server");
+
+        console.log(e.response.message);
+        alert("Server error");
       });
   };
 

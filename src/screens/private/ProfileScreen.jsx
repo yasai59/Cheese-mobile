@@ -10,6 +10,7 @@ import { ScrollView } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 import * as DocumentPicker from "expo-document-picker";
 import axios from "axios";
+import { Image as ImageResizer } from "react-native-compressor";
 
 export const ProfileScreen = () => {
   const { logout, user, setUser, token } = useContext(AppContext);
@@ -17,6 +18,8 @@ export const ProfileScreen = () => {
   const navigate = useNavigation();
 
   const [username, setUsername] = useState(user.username);
+
+  const [vacilada, setVacilada] = useState(Date.now());
 
   const handleChangePassword = () => {
     navigate.navigate("ChangePassword");
@@ -56,8 +59,12 @@ export const ProfileScreen = () => {
       "Delete account",
       "Are you sure you want to delete your account?",
       async () => {
-        const res = await axios.delete("/api/user");
-        logout();
+        try {
+          const res = await axios.delete("/api/user");
+          logout();
+        } catch (e) {
+          console.log(e);
+        }
       },
       async () => {}
     );
@@ -106,14 +113,22 @@ export const ProfileScreen = () => {
       if (doc.canceled) return;
       const image = doc.assets[0];
 
+      const resizedImage = await ImageResizer.compress(image.uri, {
+        quality: 0.8,
+        format: "PNG",
+        maxWidth: 800,
+        maxHeight: 800,
+        rotation: 0,
+        base64: false,
+        exif: true,
+      });
+
       const data = new FormData();
 
       data.append("photo", {
-        name: image.uri.split("/").pop(),
-        type: image.mimeType,
-        uri:
-          Platform.OS === "ios" ? image.uri.replace("file://", "") : image.uri,
-        size: image.size,
+        name: resizedImage.split("/").pop(),
+        type: "image/png",
+        uri: resizedImage,
       });
 
       const res = await axios.post("/api/user/photo", data, {
@@ -122,9 +137,8 @@ export const ProfileScreen = () => {
         },
       });
 
-      console.log(res.data.user);
-
       setUser(res.data.user);
+      setVacilada(Date.now());
     } catch (e) {
       alert("error changing the photo");
       console.log(e);
@@ -139,7 +153,8 @@ export const ProfileScreen = () => {
       <TouchableOpacity onPress={handleChangePhoto}>
         <Image
           source={{
-            uri: axios.defaults.baseURL + "/api/user/photo",
+            uri:
+              axios.defaults.baseURL + "/api/user/photo?vacilada=" + vacilada,
             method: "GET",
             headers: {
               "x-token": token,

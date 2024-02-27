@@ -15,7 +15,8 @@
       "**/*"
     ],
     "ios": {
-      "supportsTablet": true
+      "supportsTablet": true,
+      "bundleIdentifier": "com.yasai59.cheese"
     },
     "android": {
       "adaptiveIcon": {
@@ -33,7 +34,8 @@
       }
     },
     "plugins": [
-      "expo-font"
+      "expo-font",
+      "react-native-compressor"
     ]
   }
 }
