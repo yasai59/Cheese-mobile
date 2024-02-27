@@ -1,16 +1,14 @@
 import React, { useContext, useState } from "react";
-import { Image, Text, Alert, TouchableOpacity, Platform } from "react-native";
+import { Image, Text, Alert, TouchableOpacity, ScrollView } from "react-native";
 import { StatusBar } from "expo-status-bar";
-import { AppContext } from "../../context/AppContext";
-import tw from "../../../twrnc";
-import { InvisibleInput } from "../../components/InvisibleInput";
-import { Option } from "../../components/Option";
-import { OptionButton } from "../../components/OptionButton";
-import { ScrollView } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 import * as DocumentPicker from "expo-document-picker";
-import axios from "axios";
 import { Image as ImageResizer } from "react-native-compressor";
+import axios from "axios";
+
+import { AppContext } from "../../context/AppContext";
+import tw from "../../../twrnc";
+import { InvisibleInput, Option, OptionButton } from "../../components";
 
 export const ProfileScreen = () => {
   const { logout, user, setUser, token } = useContext(AppContext);
@@ -20,10 +18,6 @@ export const ProfileScreen = () => {
   const [username, setUsername] = useState(user.username);
 
   const [vacilada, setVacilada] = useState(Date.now());
-
-  const handleChangePassword = () => {
-    navigate.navigate("ChangePassword");
-  };
 
   const confirm = (title, body, onAccept, onCancel) => {
     Alert.alert(title, body, [
@@ -35,7 +29,6 @@ export const ProfileScreen = () => {
       { text: "Yes", onPress: onAccept },
     ]);
   };
-
   const handleRoleChange = () => {
     confirm(
       "Change account",
@@ -53,7 +46,6 @@ export const ProfileScreen = () => {
       async () => {}
     );
   };
-
   const handleDeleteAccount = () => {
     confirm(
       "Delete account",
@@ -69,7 +61,6 @@ export const ProfileScreen = () => {
       async () => {}
     );
   };
-
   const handleChangeUsername = () => {
     // test username
     if (username.length < 3) {
@@ -103,7 +94,6 @@ export const ProfileScreen = () => {
       }
     );
   };
-
   const handleChangePhoto = async () => {
     try {
       const doc = await DocumentPicker.getDocumentAsync({
@@ -182,7 +172,7 @@ export const ProfileScreen = () => {
       <Option
         title={"Password"}
         value={"********"}
-        onPress={handleChangePassword}
+        onPress={() => navigate.navigate("ChangePassword")}
       />
       <Option title={"Tastes"} value={"********"} />
       <Option title={"Restrictions"} value={"********"} />

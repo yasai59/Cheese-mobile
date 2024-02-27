@@ -7,6 +7,7 @@ import { Ionicons } from "@expo/vector-icons";
 import { TouchableHighlight } from "react-native";
 import { useContext } from "react";
 import { AppContext } from "../context/AppContext";
+import { YourRestaurantsScreen } from "../screens/private/YourRestaurantsScreen";
 
 const Tab = createBottomTabNavigator();
 
@@ -119,7 +120,7 @@ export const HomeTabs = ({ navigation }) => {
       {user.role_id === 2 ? (
         <Tab.Screen
           name="Restaurants"
-          component={Home}
+          component={YourRestaurantsScreen}
           options={{ headerShown: false }}
         />
       ) : (
