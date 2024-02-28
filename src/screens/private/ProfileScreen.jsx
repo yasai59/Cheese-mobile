@@ -174,8 +174,16 @@ export const ProfileScreen = () => {
         value={"********"}
         onPress={() => navigate.navigate("ChangePassword")}
       />
-      <Option title={"Tastes"} value={"********"} />
-      <Option title={"Restrictions"} value={"********"} />
+      <Option
+        title={"Tastes"}
+        value={"Your tastes"}
+        onPress={() => navigate.navigate("TasteForm")}
+      />
+      <Option
+        title={"Restrictions"}
+        value={"Your restrictions"}
+        onPress={() => navigate.navigate("RestrictionForm")}
+      />
       <OptionButton
         title={"Log out"}
         btnText={"Log out"}

@@ -8,6 +8,8 @@ import tw from "../../twrnc";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import { SignUpScreen } from "../screens/SignUpScreen";
 import { ChangeField, ChangePassword } from "../screens/private/ChangePassword";
+import { TasteForm } from "../screens/private/forms/TasteForm";
+import { RestrictionForm } from "../screens/private/forms/RestrictionForm";
 
 export const AppRouter = () => {
   const { isLogged } = useContext(AppContext);
@@ -29,11 +31,17 @@ export const AppRouter = () => {
             <Stack.Screen
               name="ChangePassword"
               component={ChangePassword}
-              options={{
-                headerStyle: tw`bg-base-dark`,
-                headerTitleStyle: tw`text-primary font-bold text-3xl font-title`,
-                headerShown: false,
-              }}
+              options={{ headerShown: false }}
+            />
+            <Stack.Screen
+              name="TasteForm"
+              component={TasteForm}
+              options={{ headerShown: false }}
+            />
+            <Stack.Screen
+              name="RestrictionForm"
+              component={RestrictionForm}
+              options={{ headerShown: false }}
             />
           </>
         ) : (

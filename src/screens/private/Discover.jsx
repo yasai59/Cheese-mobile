@@ -8,9 +8,12 @@ import { useNavigation } from "@react-navigation/native";
 export const Discover = () => {
   const { tastes, restriction } = useContext(AppContext);
 
+  const navigate = useNavigation();
+
   useEffect(() => {
     if (!tastes && !restriction) {
       console.log("aqui deberia saltar el form");
+      navigate.navigate("TasteForm");
     }
   }, []);
 
