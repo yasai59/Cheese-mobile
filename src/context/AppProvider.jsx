@@ -8,6 +8,9 @@ export const AppProvider = ({ children }) => {
   const [user, setUser] = useState(null);
   const [tastes, setTastes] = useState([]);
   const [restrictions, setRestrictions] = useState([]);
+  const [allTastes, setAllTastes] = useState([]);
+  const [allRestrictions, setAllRestrictions] = useState([]);
+
   const isLogged = !!token;
 
   const login = async (username, password) => {
@@ -63,6 +66,10 @@ export const AppProvider = ({ children }) => {
         isLogged,
         changeToken,
         loginLocal,
+        tastes,
+        restrictions,
+        setRestrictions,
+        setTastes,
       }}
     >
       {children}

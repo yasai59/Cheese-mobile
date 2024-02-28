@@ -5,3 +5,4 @@ export * from "./InvisibleInput";
 export * from "./LoginGoogle";
 export * from "./Option";
 export * from "./OptionButton";
+export * from "./OptionSelecter";

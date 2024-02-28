@@ -5,7 +5,7 @@ import tw from "../../../../twrnc";
 import { AppContext } from "../../../context/AppContext";
 import { useNavigation } from "@react-navigation/native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
-import { FormBtn, Input } from "../../../components";
+import { FormBtn, Input, OptionSelecter } from "../../../components";
 
 export const TasteForm = () => {
   const { tastes } = useContext(AppContext);
@@ -35,6 +35,10 @@ export const TasteForm = () => {
           placeholder={"Search for types of food"}
           value={search}
           onChangeText={(text) => setSearch(text)}
+        />
+        <OptionSelecter
+          selectedOptions={selectedTastes}
+          setSelectedOptions={setSelectedTastes}
         />
         <FormBtn
           title={"Next step"}

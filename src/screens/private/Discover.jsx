@@ -6,12 +6,12 @@ import { AppContext } from "../../context/AppContext";
 import { useNavigation } from "@react-navigation/native";
 
 export const Discover = () => {
-  const { tastes, restriction } = useContext(AppContext);
+  const { tastes, restrictions } = useContext(AppContext);
 
   const navigate = useNavigation();
 
   useEffect(() => {
-    if (!tastes && !restriction) {
+    if (tastes.length === 0 && restrictions.length === 0) {
       console.log("aqui deberia saltar el form");
       navigate.navigate("TasteForm");
     }
