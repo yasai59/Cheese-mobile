@@ -1,11 +1,13 @@
 import { useState } from "react";
 import { AppContext } from "./AppContext";
 import axios from "axios";
-import { removeData, storeData } from "../storage/storageManager";
+import { getData, removeData, storeData } from "../storage/storageManager";
 
 export const AppProvider = ({ children }) => {
   const [token, setToken] = useState(null);
   const [user, setUser] = useState(null);
+  const [tastes, setTastes] = useState([]);
+  const [restrictions, setRestrictions] = useState([]);
   const isLogged = !!token;
 
   const login = async (username, password) => {
@@ -25,6 +27,18 @@ export const AppProvider = ({ children }) => {
     }
   };
 
+  const loginLocal = async () => {
+    getData("token").then(async (token) => {
+      if (!token) return;
+      axios.defaults.headers.common["x-token"] = `${token}`;
+      const res = await axios.get("/api/user/myUser");
+      setUser(res.data.user);
+      setToken(token);
+      const resTastes = await axios.get("/api/taste");
+      setTastes(resTastes.data.tastes);
+    });
+  };
+
   const changeToken = (newToken) => {
     axios.defaults.headers.common["x-token"] = `${newToken}`;
     setToken(newToken);
@@ -40,7 +54,16 @@ export const AppProvider = ({ children }) => {
 
   return (
     <AppContext.Provider
-      value={{ token, login, user, setUser, logout, isLogged, changeToken }}
+      value={{
+        token,
+        login,
+        user,
+        setUser,
+        logout,
+        isLogged,
+        changeToken,
+        loginLocal,
+      }}
     >
       {children}
     </AppContext.Provider>

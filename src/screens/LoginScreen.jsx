@@ -9,19 +9,12 @@ import { LoginGoogle } from "../components/LoginGoogle";
 import { getData } from "../storage/storageManager";
 
 export const LoginScreen = ({ navigation }) => {
-  const { login, changeToken, setUser } = useContext(AppContext);
+  const { login, loginLocal } = useContext(AppContext);
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
 
-  getData("user").then((user) => {
-    if (!user) return;
-    setUser(JSON.parse(user));
-    getData("token").then(async (token) => {
-      if (!token) return;
-      changeToken(token);
-    });
-  });
+  loginLocal();
 
   const handlePress = () => {
     login(username, password)

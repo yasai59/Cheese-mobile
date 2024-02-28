@@ -8,6 +8,7 @@ import { TouchableHighlight } from "react-native";
 import { useContext } from "react";
 import { AppContext } from "../context/AppContext";
 import { YourRestaurantsScreen } from "../screens/private/YourRestaurantsScreen";
+import { Discover } from "../screens/private/Discover";
 
 const Tab = createBottomTabNavigator();
 
@@ -109,7 +110,7 @@ export const HomeTabs = ({ navigation }) => {
     >
       <Tab.Screen
         name="Home"
-        component={Home}
+        component={Discover}
         options={{ headerShown: false }}
       />
       <Tab.Screen

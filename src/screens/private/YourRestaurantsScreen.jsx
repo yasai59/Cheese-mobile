@@ -2,7 +2,6 @@ import React from "react";
 import { ScrollView, Text, View } from "react-native";
 import tw from "../../../twrnc";
 import { StatusBar } from "expo-status-bar";
-import { FormBtn } from "../../components";
 import { TouchableHighlight } from "react-native";
 
 export const YourRestaurantsScreen = () => {
