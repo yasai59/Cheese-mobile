@@ -20,7 +20,7 @@ export const RestrictionForm = () => {
 
   useEffect(() => {
     axios.get("/api/restriction/all").then((res) => {
-      setAllRestrictions(res.data.tastes);
+      setAllRestrictions(res.data.restrictions);
     });
   }, []);
 
@@ -30,7 +30,7 @@ export const RestrictionForm = () => {
 
   const handleNext = () => {
     setRestrictions(selectedRestrictions);
-    navigate.navigate("RestrictionForm");
+    navigate.navigate("Cheese");
   };
 
   return (
@@ -61,11 +61,8 @@ export const RestrictionForm = () => {
           options={allRestrictions}
           filter={search}
         />
-        <FormBtn
-          title={"Start exploring"}
-          className={"mt-5"}
-          handlePress={handleNext}
-        />
+        <View style={tw`mb-5`} />
+        <FormBtn title={"Start exploring"} handlePress={handleNext} />
       </View>
       <StatusBar style="light" />
     </View>

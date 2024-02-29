@@ -60,9 +60,9 @@ export const TasteForm = () => {
           options={allTastes}
           filter={search}
         />
+        <View style={tw`mb-5`} />
         <FormBtn
           title={"Next step"}
-          className={"mt-5"}
           handlePress={handleNext}
         />
         <Text

@@ -27,8 +27,10 @@ export const OptionSelecter = ({
     }
   };
 
+  console.log(selectedOptions);
+
   return (
-    <View style={tw`flex flex-row gap-2`}>
+    <View style={tw`flex flex-row gap-2 flex-wrap`}>
       {options
         .filter((val) => val.name.toLowerCase().includes(filter.toLowerCase()))
         .map((option) => {
