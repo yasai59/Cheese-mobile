@@ -12,7 +12,6 @@ export const Discover = () => {
 
   useEffect(() => {
     if (tastes.length === 0 && restrictions.length === 0) {
-      console.log("aqui deberia saltar el form");
       navigate.navigate("TasteForm");
     }
   }, []);

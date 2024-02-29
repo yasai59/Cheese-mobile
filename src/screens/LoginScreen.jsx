@@ -9,12 +9,10 @@ import { LoginGoogle } from "../components/LoginGoogle";
 import { getData } from "../storage/storageManager";
 
 export const LoginScreen = ({ navigation }) => {
-  const { login, loginLocal } = useContext(AppContext);
+  const { login } = useContext(AppContext);
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
-
-  loginLocal();
 
   const handlePress = () => {
     login(username, password)

@@ -1,18 +1,36 @@
 import { StatusBar } from "expo-status-bar";
 import { Text, View } from "react-native";
-import { useContext, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import tw from "../../../../twrnc";
 import { AppContext } from "../../../context/AppContext";
 import { useNavigation } from "@react-navigation/native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { FormBtn, Input, OptionSelecter } from "../../../components";
+import axios from "axios";
 
 export const TasteForm = () => {
-  const { tastes } = useContext(AppContext);
+  const { tastes, setTastes } = useContext(AppContext);
   const navigate = useNavigation();
   const insets = useSafeAreaInsets();
   const [search, setSearch] = useState("");
   const [selectedTastes, setSelectedTastes] = useState(tastes);
+
+  const [allTastes, setAllTastes] = useState([]);
+
+  useEffect(() => {
+    axios.get("/api/taste/all").then((res) => {
+      setAllTastes(res.data.tastes);
+    });
+  }, []);
+
+  useEffect(() => {
+    setSelectedTastes(tastes);
+  }, [tastes]);
+
+  const handleNext = () => {
+    setTastes(selectedTastes);
+    navigate.navigate("RestrictionForm");
+  };
 
   return (
     <View
@@ -34,21 +52,22 @@ export const TasteForm = () => {
           className={`mt-5 mb-5`}
           placeholder={"Search for types of food"}
           value={search}
-          onChangeText={(text) => setSearch(text)}
+          onChange={(text) => setSearch(text)}
         />
         <OptionSelecter
           selectedOptions={selectedTastes}
           setSelectedOptions={setSelectedTastes}
+          options={allTastes}
+          filter={search}
         />
         <FormBtn
           title={"Next step"}
-          handlePress={() => navigate.navigate("RestrictionForm")}
+          className={"mt-5"}
+          handlePress={handleNext}
         />
         <Text
           style={tw`text-primary underline mt-5`}
-          onPress={() => {
-            navigate.navigate("Cheese");
-          }}
+          onPress={() => navigate.navigate("Cheese")}
         >
           Skip form - taste
         </Text>
