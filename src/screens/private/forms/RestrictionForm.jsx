@@ -1,5 +1,5 @@
 import { StatusBar } from "expo-status-bar";
-import { Text, View } from "react-native";
+import { Text, Touchable, TouchableOpacity, View } from "react-native";
 import { useContext, useEffect, useState } from "react";
 import tw from "../../../../twrnc";
 import { AppContext } from "../../../context/AppContext";
@@ -7,6 +7,7 @@ import { useNavigation } from "@react-navigation/native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { FormBtn, Input, OptionSelecter } from "../../../components";
 import axios from "axios";
+import { LinearGradient } from "expo-linear-gradient";
 
 export const RestrictionForm = () => {
   const { restrictions, setRestrictions } = useContext(AppContext);
@@ -17,6 +18,10 @@ export const RestrictionForm = () => {
     useState(restrictions);
 
   const [allRestrictions, setAllRestrictions] = useState([]);
+
+  const actualDiet = selectedRestrictions.find((r) => r.id < 3);
+
+  const [diet, setDiet] = useState(actualDiet ?? 3);
 
   useEffect(() => {
     axios.get("/api/restriction/all").then((res) => {
@@ -29,7 +34,7 @@ export const RestrictionForm = () => {
   }, [restrictions]);
 
   const handleNext = () => {
-    setRestrictions(selectedRestrictions);
+    setRestrictions([diet, ...selectedRestrictions.filter((r) => r.id > 3)]);
     navigate.navigate("Cheese");
   };
 
@@ -49,6 +54,65 @@ export const RestrictionForm = () => {
         <Text style={tw`text-light font-bold text-4xl mt-10`}>
           Are you vegan or have an allergy?
         </Text>
+        <View style={tw`flex flex-row justify-between gap-2 mt-2`}>
+          <TouchableOpacity onPress={() => setDiet(3)}>
+            {diet === 3 ? (
+              <LinearGradient
+                colors={[
+                  tw`text-primary`["color"],
+                  tw`text-secondary`["color"],
+                ]}
+                start={{ x: 0, y: 0 }}
+                end={{ x: 0.7, y: 0.7 }}
+                style={tw`bg-base w-30 h-30 items-center justify-center rounded-xl`}
+              >
+                <Text style={tw`text-light font-bold`}>Omnivore</Text>
+              </LinearGradient>
+            ) : (
+              <View
+                style={tw`bg-base w-30 h-30 items-center justify-center rounded-xl`}
+              >
+                <Text style={tw`text-light`}>Omnivore</Text>
+              </View>
+            )}
+          </TouchableOpacity>
+          <TouchableOpacity onPress={() => setDiet(2)}>
+            {diet === 2 ? (
+              <LinearGradient
+                colors={[tw`text-primary`["color"], "#1A936F"]}
+                start={{ x: 0, y: 0 }}
+                end={{ x: 0.7, y: 0.7 }}
+                style={tw`bg-base w-30 h-30 items-center justify-center rounded-xl`}
+              >
+                <Text style={tw`text-light font-bold`}>Vegetarian</Text>
+              </LinearGradient>
+            ) : (
+              <View
+                style={tw`bg-base w-30 h-30 items-center justify-center rounded-xl`}
+              >
+                <Text style={tw`text-light`}>Vegetarian</Text>
+              </View>
+            )}
+          </TouchableOpacity>
+          <TouchableOpacity onPress={() => setDiet(1)}>
+            {diet === 1 ? (
+              <LinearGradient
+                colors={[tw`text-primary`["color"], "#1A936F"]}
+                start={{ x: 0, y: 0 }}
+                end={{ x: 0.5, y: 0.7 }}
+                style={tw`bg-base w-30 h-30 items-center justify-center rounded-xl`}
+              >
+                <Text style={tw`text-light font-bold`}>Vegan</Text>
+              </LinearGradient>
+            ) : (
+              <View
+                style={tw`bg-base w-30 h-30 items-center justify-center rounded-xl`}
+              >
+                <Text style={tw`text-light`}>Vegan</Text>
+              </View>
+            )}
+          </TouchableOpacity>
+        </View>
         <Input
           className={`mt-5 mb-5`}
           placeholder={"Search for types of food"}
@@ -58,7 +122,7 @@ export const RestrictionForm = () => {
         <OptionSelecter
           selectedOptions={selectedRestrictions}
           setSelectedOptions={setSelectedRestrictions}
-          options={allRestrictions}
+          options={allRestrictions.filter((r) => r.id > 3)}
           filter={search}
         />
         <View style={tw`mb-5`} />
