@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { AppContext } from "./AppContext";
 import axios from "axios";
 import { getData, removeData, storeData } from "../storage/storageManager";
+import { GoogleSignin } from "@react-native-google-signin/google-signin";
 
 export const AppProvider = ({ children }) => {
   const [token, setToken] = useState(null);
@@ -31,6 +32,21 @@ export const AppProvider = ({ children }) => {
     }
   };
 
+  const loginToken = async (token, user) => {
+    if (!token) return;
+    axios.defaults.headers.common["x-token"] = `${token}`;
+    setUser(user);
+    try {
+      const resTastes = await axios.get("/api/taste");
+      setTastes(resTastes.data.tastes.map((t) => t.id));
+      const resRestrictions = await axios.get("/api/restriction");
+      setRestrictions(resRestrictions.data.restrictions.map((r) => r.id));
+    } catch (e) {
+      console.log(e.response.data.message);
+    }
+    setToken(token);
+  };
+
   const loginLocal = async () => {
     getData("token").then(async (token) => {
       if (!token) return;
@@ -54,7 +70,9 @@ export const AppProvider = ({ children }) => {
     setToken(newToken);
   };
 
-  const logout = () => {
+  const logout = async () => {
+    await GoogleSignin.revokeAccess();
+    await GoogleSignin.signOut();
     removeData("token");
     removeData("user");
     axios.defaults.headers.common["x-token"] = null;
@@ -92,6 +110,7 @@ export const AppProvider = ({ children }) => {
         restrictions,
         setRestrictions: changeRestrictions,
         setTastes: changeTastes,
+        loginToken,
       }}
     >
       {children}

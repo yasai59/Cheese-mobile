@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "92194054763",
+    "project_id": "cheese-sigin",
+    "storage_bucket": "cheese-sigin.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:92194054763:android:b21151cf5b589bdb47472e",
+        "android_client_info": {
+          "package_name": "com.yasai59.cheese"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "92194054763-1r2vtmr5dn6ngpdl8gsjqanu38r3oboh.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.yasai59.cheese",
+            "certificate_hash": "da775c6a75d716c00ecc14142dbf3c3706cf0e7a"
+          }
+        },
+        {
+          "client_id": "92194054763-kcbdgjt4fesd0httgb3hi4solt7aqmrm.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBUtqFcSxOmUKv8yhX6Gjv8DR_WVlfkC7o"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "92194054763-kcbdgjt4fesd0httgb3hi4solt7aqmrm.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

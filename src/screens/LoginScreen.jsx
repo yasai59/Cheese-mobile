@@ -2,14 +2,18 @@ import { Input } from "../components/Input";
 import { FormBtn } from "../components/FormBtn";
 import { Image, Text, View } from "react-native";
 import { StatusBar } from "expo-status-bar";
-import { useContext, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import tw from "../../twrnc";
 import { AppContext } from "../context/AppContext";
 import { LoginGoogle } from "../components/LoginGoogle";
-import { getData } from "../storage/storageManager";
+import {
+  GoogleSignin,
+  GoogleSigninButton,
+} from "@react-native-google-signin/google-signin";
+import axios from "axios";
 
 export const LoginScreen = ({ navigation }) => {
-  const { login } = useContext(AppContext);
+  const { login, loginToken } = useContext(AppContext);
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
@@ -32,6 +36,39 @@ export const LoginScreen = ({ navigation }) => {
     navigation.navigate("recoverPassword");
   };
 
+  useEffect(() => {
+    GoogleSignin.configure({
+      webClientId:
+        "92194054763-kcbdgjt4fesd0httgb3hi4solt7aqmrm.apps.googleusercontent.com",
+      offlineAccess: true,
+    });
+  }, []);
+
+  const handleGoogleLogin = async () => {
+    try {
+      await GoogleSignin.hasPlayServices();
+      const userInfo = await GoogleSignin.signIn();
+      const { email, name, photo } = userInfo.user;
+      axios
+        .post("/api/user/google", { email, name, photo })
+        .then((res) => {
+          loginToken(res.data.token, res.data.user);
+        })
+        .catch((e) => {
+          console.log(e);
+        });
+      // login(userInfo.user.email, userInfo.idToken)
+      //   .then((res) => {
+      //     setError(res);
+      //   })
+      //   .catch((e) => {
+      //     setError("Error connecting to the server");
+      //   });
+    } catch (error) {
+      console.log(JSON.stringify(error));
+    }
+  };
+
   return (
     <View style={tw`bg-base-dark flex-1 justify-center items-center`}>
       <Image
@@ -39,8 +76,12 @@ export const LoginScreen = ({ navigation }) => {
         style={tw`h-[20rem] aspect-square`}
       />
       <Text style={tw`text-red-500 mb-5`}>{error}</Text>
-      <LoginGoogle title="Log in with google" className={"w-80 mb-5"} />
-      <View style={tw`flex flex-row items-center mb-5 w-80`}>
+      <LoginGoogle
+        title="Log in with google"
+        className={"w-80"}
+        handlePress={handleGoogleLogin}
+      />
+      <View style={tw`flex flex-row items-center my-5 w-80`}>
         <View style={tw`bg-base-light flex-grow h-[1px]`}></View>
         <Text style={tw`text-base-light px-3`}>Or</Text>
         <View style={tw`bg-base-light flex-grow h-[1px]`}></View>
