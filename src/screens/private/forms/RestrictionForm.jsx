@@ -19,7 +19,7 @@ export const RestrictionForm = () => {
 
   const [allRestrictions, setAllRestrictions] = useState([]);
 
-  const actualDiet = selectedRestrictions.find((r) => r.id < 3);
+  const actualDiet = selectedRestrictions.find((r) => r < 3);
 
   const [diet, setDiet] = useState(actualDiet ?? 3);
 
@@ -34,7 +34,7 @@ export const RestrictionForm = () => {
   }, [restrictions]);
 
   const handleNext = () => {
-    setRestrictions([diet, ...selectedRestrictions.filter((r) => r.id > 3)]);
+    setRestrictions([diet, ...selectedRestrictions.filter((r) => r > 3)]);
     navigate.navigate("Cheese");
   };
 

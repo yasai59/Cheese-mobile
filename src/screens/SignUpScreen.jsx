@@ -46,7 +46,11 @@ export const SignUpScreen = ({ navigation }) => {
         navigation.goBack();
       })
       .catch((err) => {
-        alert(err.response.data.message);
+        if (err.response.status === 400) {
+          alert(err.response.errors[0].msg);
+        } else {
+          alert("An error occurred");
+        }
       });
   };
 
