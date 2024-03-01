@@ -66,13 +66,13 @@ export const RestrictionForm = () => {
                 end={{ x: 0.7, y: 0.7 }}
                 style={tw`bg-base w-30 h-30 items-center justify-center rounded-xl`}
               >
-                <Text style={tw`text-light font-bold`}>Omnivore</Text>
+                <Text style={tw`text-light font-bold`}>Normal</Text>
               </LinearGradient>
             ) : (
               <View
                 style={tw`bg-base w-30 h-30 items-center justify-center rounded-xl`}
               >
-                <Text style={tw`text-light`}>Omnivore</Text>
+                <Text style={tw`text-light`}>Normal</Text>
               </View>
             )}
           </TouchableOpacity>

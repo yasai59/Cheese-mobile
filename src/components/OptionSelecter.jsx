@@ -27,8 +27,6 @@ export const OptionSelecter = ({
     }
   };
 
-  console.log(selectedOptions);
-
   return (
     <View style={tw`flex flex-row gap-2 flex-wrap`}>
       {options
@@ -44,10 +42,10 @@ export const OptionSelecter = ({
                       tw`text-secondary`["color"],
                     ]}
                     style={tw`p-2 rounded-full px-3`}
-                    start={{ x: 0, y: 0 }}
-                    end={{ x: 0.7, y: 0 }}
+                    start={{ x: 0, y: 0.4 }}
+                    end={{ x: 0.7, y: 1 }}
                   >
-                    <Text style={tw`font-bold text-base-dark`}>
+                    <Text style={tw`font-bold text-base-light`}>
                       {option.name}
                     </Text>
                   </LinearGradient>
