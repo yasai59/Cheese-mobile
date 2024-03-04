@@ -48,10 +48,10 @@ export const LoginScreen = ({ navigation }) => {
       await GoogleSignin.hasPlayServices();
       const userInfo = await GoogleSignin.signIn();
       setIsLoading(true);
-      const { email, name, photo } = userInfo.user;
-      console.log({ email, name, photo });
+      const { email, name, photo, id: userId } = userInfo.user;
+      const idToken = userInfo.idToken;
       axios
-        .post("/api/user/google", { email, name, photo })
+        .post("/api/user/google", { email, name, photo, userId, idToken })
         .then((res) => {
           setIsLoading(false);
           loginToken(res.data.token, res.data.user);
