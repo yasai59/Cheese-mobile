@@ -10,6 +10,7 @@ import { SignUpScreen } from "../screens/SignUpScreen";
 import { ChangeField, ChangePassword } from "../screens/private/ChangePassword";
 import { TasteForm } from "../screens/private/forms/TasteForm";
 import { RestrictionForm } from "../screens/private/forms/RestrictionForm";
+import { AddRestaurant } from "../screens/private/restaurants/AddRestaurant";
 
 export const AppRouter = () => {
   const { isLogged } = useContext(AppContext);
@@ -41,6 +42,11 @@ export const AppRouter = () => {
             <Stack.Screen
               name="RestrictionForm"
               component={RestrictionForm}
+              options={{ headerShown: false }}
+            />
+            <Stack.Screen
+              name="AddRestaurant"
+              component={AddRestaurant}
               options={{ headerShown: false }}
             />
           </>

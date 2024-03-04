@@ -6,3 +6,5 @@ export * from "./LoginGoogle";
 export * from "./Option";
 export * from "./OptionButton";
 export * from "./OptionSelecter";
+export * from "./Loading";
+export * from "./AddRestaurantPhoto";
