@@ -36,6 +36,7 @@ export const AppProvider = ({ children }) => {
     if (!token) return;
     axios.defaults.headers.common["x-token"] = `${token}`;
     setUser(user);
+    storeData("token", token);
     try {
       const resTastes = await axios.get("/api/taste");
       setTastes(resTastes.data.tastes.map((t) => t.id));
@@ -47,7 +48,7 @@ export const AppProvider = ({ children }) => {
     setToken(token);
   };
 
-  const loginLocal = async () => {
+  const loginLocal = () => {
     getData("token").then(async (token) => {
       if (!token) return;
       axios.defaults.headers.common["x-token"] = `${token}`;
@@ -68,13 +69,13 @@ export const AppProvider = ({ children }) => {
   const changeToken = (newToken) => {
     axios.defaults.headers.common["x-token"] = `${newToken}`;
     setToken(newToken);
+    storeData("token", newToken);
   };
 
   const logout = async () => {
     await GoogleSignin.revokeAccess();
     await GoogleSignin.signOut();
     removeData("token");
-    removeData("user");
     axios.defaults.headers.common["x-token"] = null;
     setToken(null);
     setUser(null);

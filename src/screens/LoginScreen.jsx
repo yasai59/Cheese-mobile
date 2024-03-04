@@ -1,22 +1,21 @@
 import { Input } from "../components/Input";
 import { FormBtn } from "../components/FormBtn";
-import { Image, Text, View } from "react-native";
+import { Image, Text, View, Animated } from "react-native";
 import { StatusBar } from "expo-status-bar";
 import { useContext, useEffect, useState } from "react";
 import tw from "../../twrnc";
 import { AppContext } from "../context/AppContext";
 import { LoginGoogle } from "../components/LoginGoogle";
-import {
-  GoogleSignin,
-  GoogleSigninButton,
-} from "@react-native-google-signin/google-signin";
+import { GoogleSignin } from "@react-native-google-signin/google-signin";
 import axios from "axios";
+import { Loading } from "../components/Loading";
 
 export const LoginScreen = ({ navigation }) => {
   const { login, loginToken } = useContext(AppContext);
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
+  const [isLoading, setIsLoading] = useState(false);
 
   const handlePress = () => {
     login(username, password)
@@ -48,22 +47,19 @@ export const LoginScreen = ({ navigation }) => {
     try {
       await GoogleSignin.hasPlayServices();
       const userInfo = await GoogleSignin.signIn();
+      setIsLoading(true);
       const { email, name, photo } = userInfo.user;
+      console.log({ email, name, photo });
       axios
         .post("/api/user/google", { email, name, photo })
         .then((res) => {
+          setIsLoading(false);
           loginToken(res.data.token, res.data.user);
         })
         .catch((e) => {
           console.log(e);
+          setIsLoading(false);
         });
-      // login(userInfo.user.email, userInfo.idToken)
-      //   .then((res) => {
-      //     setError(res);
-      //   })
-      //   .catch((e) => {
-      //     setError("Error connecting to the server");
-      //   });
     } catch (error) {
       console.log(JSON.stringify(error));
     }
@@ -75,6 +71,7 @@ export const LoginScreen = ({ navigation }) => {
         source={require("../assets/logoFull.png")}
         style={tw`h-[20rem] aspect-square`}
       />
+      <Loading isLoading={isLoading} />
       <Text style={tw`text-red-500 mb-5`}>{error}</Text>
       <LoginGoogle
         title="Log in with google"
