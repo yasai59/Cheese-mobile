@@ -53,8 +53,8 @@ export const LoginScreen = ({ navigation }) => {
       axios
         .post("/api/user/google", { email, name, photo, userId, idToken })
         .then((res) => {
-          setIsLoading(false);
           loginToken(res.data.token, res.data.user);
+          setIsLoading(false);
         })
         .catch((e) => {
           console.log(e);

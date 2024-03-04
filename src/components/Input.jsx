@@ -11,6 +11,7 @@ export const Input = ({ placeholder, className, type, value, onChange }) => {
       secureTextEntry={type === "password"}
       value={value}
       onChangeText={onChange}
+      inputMode={type === "phone" ? "tel" : "text"}
       placeholderTextColor={"#515451"}
     />
   );

@@ -11,7 +11,7 @@ const CarouselItem = ({ image, handleDelete }) => {
       <Image source={{ uri: image.uri }} style={tw`w-28 h-28 rounded-xl`} />
       <Entypo
         name="circle-with-cross"
-        size={24}
+        size={17}
         color="red"
         style={tw`absolute top-0 right-0 bg-white rounded-full`}
         onPress={handleDelete}
@@ -31,7 +31,14 @@ export const AddRestaurantCarousel = () => {
     });
     if (!result.canceled) {
       console.log(result);
-      setImages((prev) => [...prev, ...result.assets].slice(0, 12));
+      setImages((prev) => {
+        // delete coincidences and limit to 12 photos
+        const arr = [...prev, ...result.assets];
+        const dataArr = new Set(arr);
+        const xd = [...dataArr];
+
+        return xd.slice(0, 12);
+      });
     }
   };
 
@@ -47,12 +54,14 @@ export const AddRestaurantCarousel = () => {
             }}
           />
         ))}
-        <TouchableOpacity
-          style={tw`rounded-xl border-2 aspect-square border-dashed border-light w-28 self-center justify-center items-center`}
-          onPress={handlePickImage}
-        >
-          <Feather name="plus" size={50} color={tw`text-light`.color} />
-        </TouchableOpacity>
+        {images.length < 12 && (
+          <TouchableOpacity
+            style={tw`rounded-xl border-2 aspect-square border-dashed border-light w-28 self-center justify-center items-center`}
+            onPress={handlePickImage}
+          >
+            <Feather name="plus" size={50} color={tw`text-light`.color} />
+          </TouchableOpacity>
+        )}
       </View>
     </>
   );

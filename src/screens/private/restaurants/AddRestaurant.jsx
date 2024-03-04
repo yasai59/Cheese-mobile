@@ -34,7 +34,7 @@ export const AddRestaurant = () => {
           <Text style={tw`text-light mb-3 mt-3`}>Address</Text>
           <Input placeholder={"e.x Bob super mega street, 420"} />
           <Text style={tw`text-light mb-3 mt-3`}>Phone number</Text>
-          <Input placeholder={"e.x +34 669 69 69 69"} />
+          <Input placeholder={"e.x +34 669 69 69 69"} type={"phone"} />
           <Text style={tw`text-light mb-3 mt-3`}>Restaurant photo</Text>
           <AddRestaurantPhoto />
         </View>
