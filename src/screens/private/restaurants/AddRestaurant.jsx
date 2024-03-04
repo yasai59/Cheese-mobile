@@ -4,6 +4,7 @@ import { useSafeAreaInsets } from "react-native-safe-area-context";
 import tw from "../../../../twrnc";
 import { AddRestaurantPhoto, FormBtn, Input } from "../../../components";
 import { useNavigation } from "@react-navigation/native";
+import { AddRestaurantCarousel } from "../../../components/AddRestaurantCarousel";
 
 export const AddRestaurant = () => {
   const insets = useSafeAreaInsets();
@@ -39,6 +40,14 @@ export const AddRestaurant = () => {
         </View>
         <View style={tw`border-b border-base-light w-full pb-5`}></View>
         <View style={tw`w-90 self-center`}>
+          <View style={tw`flex-row items-end mt-5`}>
+            <Text style={tw`text-primary text-[18px]`}>Your carousel</Text>
+            <Text style={tw`text-light text-[13px]`}>
+              {" "}
+              You need to add at least 2 photos
+            </Text>
+          </View>
+          <AddRestaurantCarousel />
           <Text style={tw`text-light mt-3 text-[12px]`}>
             To start adding your dishes go to the restaurant page once created
           </Text>
