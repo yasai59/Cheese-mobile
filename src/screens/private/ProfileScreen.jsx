@@ -68,6 +68,12 @@ export const ProfileScreen = () => {
       return;
     }
 
+    const isValidUsername = /^[a-zA-Z0-9!@#$%^&()_+\-=.<>?]*$/;
+    if (!isValidUsername.test(username)) {
+      Alert.alert("Invalid characters in username");
+      return;
+    }
+
     confirm(
       "Change username",
       `Are you sure you want to change your username to ${username}?`,

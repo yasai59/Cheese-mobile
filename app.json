@@ -23,7 +23,7 @@
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#ffffff"
       },
-      "package": "com.yasai59.cheese"
+      "package": "com.yasai.cheese"
     },
     "web": {
       "favicon": "./assets/favicon.png"
