@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Image, Text, TouchableOpacity, View } from "react-native";
 import tw from "../../twrnc";
 import { Feather } from "@expo/vector-icons";
@@ -20,7 +20,7 @@ const CarouselItem = ({ image, handleDelete }) => {
   );
 };
 
-export const AddRestaurantCarousel = () => {
+export const AddRestaurantCarousel = ({ setDefCarousel = () => {} }) => {
   const [images, setImages] = useState([]);
 
   const handlePickImage = async () => {
@@ -41,6 +41,10 @@ export const AddRestaurantCarousel = () => {
       });
     }
   };
+
+  useEffect(() => {
+    setDefCarousel(images);
+  }, [images]);
 
   return (
     <>

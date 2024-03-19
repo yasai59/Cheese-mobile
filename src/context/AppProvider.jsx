@@ -73,8 +73,12 @@ export const AppProvider = ({ children }) => {
   };
 
   const logout = async () => {
-    await GoogleSignin.revokeAccess();
-    await GoogleSignin.signOut();
+    try {
+      await GoogleSignin.revokeAccess();
+      await GoogleSignin.signOut();
+    } catch (e) {
+      console.log(e);
+    }
     removeData("token");
     axios.defaults.headers.common["x-token"] = null;
     setToken(null);

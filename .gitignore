@@ -39,3 +39,4 @@ yarn-error.*
 # custom
 *.apk
 *.ks
+*.aab

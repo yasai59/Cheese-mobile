@@ -9,6 +9,7 @@ import axios from "axios";
 import { AppContext } from "../../context/AppContext";
 import tw from "../../../twrnc";
 import { InvisibleInput, Option, OptionButton } from "../../components";
+import { resizeImage } from "../../helpers/resizeImage";
 
 export const ProfileScreen = () => {
   const { logout, user, setUser, token } = useContext(AppContext);
@@ -109,15 +110,7 @@ export const ProfileScreen = () => {
       if (doc.canceled) return;
       const image = doc.assets[0];
 
-      const resizedImage = await ImageResizer.compress(image.uri, {
-        quality: 0.8,
-        format: "PNG",
-        maxWidth: 800,
-        maxHeight: 800,
-        rotation: 0,
-        base64: false,
-        exif: true,
-      });
+      const resizedImage = await resizeImage(image.uri);
 
       const data = new FormData();
 
