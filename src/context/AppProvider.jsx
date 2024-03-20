@@ -16,6 +16,12 @@ export const AppProvider = ({ children }) => {
 
   const isLogged = !!token;
 
+  const updateRestaurants = () => {
+    axios.get("/api/restaurant").then((res) => {
+      setRestaurants(res.data);
+    });
+  };
+
   useEffect(() => {
     loginLocal();
   }, []);
@@ -24,9 +30,7 @@ export const AppProvider = ({ children }) => {
     if (!token) return;
 
     axios.defaults.headers.common["x-token"] = `${token}`;
-    axios.get("/api/restaurant").then((res) => {
-      setRestaurants(res.data);
-    });
+    updateRestaurants();
     (async () => {
       const resTastes = await axios.get("/api/taste");
       setTastes(resTastes.data.tastes.map((t) => t.id));
@@ -122,7 +126,7 @@ export const AppProvider = ({ children }) => {
         setTastes: changeTastes,
         loginToken,
         restaurants,
-        setRestaurants,
+        updateRestaurants,
       }}
     >
       {children}

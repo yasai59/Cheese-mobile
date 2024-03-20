@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import { ScrollView, Text, View } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import tw from "../../../../twrnc";
@@ -7,8 +7,11 @@ import { useNavigation } from "@react-navigation/native";
 import { AddRestaurantCarousel } from "../../../components/AddRestaurantCarousel";
 import axios from "axios";
 import { resizeImage } from "../../../helpers/resizeImage";
+import { AppContext } from "../../../context/AppContext";
 
 export const AddRestaurant = () => {
+  const { updateRestaurants } = useContext(AppContext);
+
   const insets = useSafeAreaInsets();
   const navigation = useNavigation();
 
@@ -54,7 +57,8 @@ export const AddRestaurant = () => {
           "Content-Type": "multipart/form-data",
         },
       });
-      console.log(res.data);
+      updateRestaurants();
+      navigation.goBack();
     } catch (e) {
       console.log(e.response.data.message);
     }

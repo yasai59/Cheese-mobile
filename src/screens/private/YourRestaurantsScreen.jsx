@@ -1,8 +1,8 @@
-import React, { useContext, useEffect, useMemo, useState } from "react";
+import React, { useContext } from "react";
 import { Image, ScrollView, Text, View } from "react-native";
 import tw from "../../../twrnc";
 import { StatusBar } from "expo-status-bar";
-import { TouchableHighlight } from "react-native";
+import { TouchableHighlight, TouchableOpacity } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 import axios from "axios";
 import { AppContext } from "../../context/AppContext";
@@ -11,6 +11,8 @@ export const YourRestaurantsScreen = () => {
   const navigate = useNavigation();
 
   const { restaurants } = useContext(AppContext);
+
+  console.log(restaurants);
 
   // api/restaurant/profilephoto/:name
   return (
@@ -23,25 +25,29 @@ export const YourRestaurantsScreen = () => {
               `${axios.defaults.baseURL}/api/restaurant/profilephoto/${restaurant.photo}`
             );
             return (
-              <View
+              <TouchableOpacity
                 key={restaurant.id}
-                style={tw`bg-base my-2 p-5 flex flex-row rounded-lg`}
+                style={tw`bg-base my-2 p-2 flex flex-row rounded-lg`}
               >
                 <Image
                   source={{
-                    uri: `${
-                      axios.defaults.baseURL
-                    }/api/restaurant/profilephoto/${
-                      restaurant.photo
-                    }?vacilada=${Date.now()}`,
+                    uri: `${axios.defaults.baseURL}/api/restaurant/profilephoto/${restaurant.photo}`,
                   }}
+                  style={tw`w-20 h-20 rounded-lg mx-2 my-2`}
                 />
-                <Text style={tw`text-light`}>{restaurant.name}</Text>
-              </View>
+                <View style={tw`flex items-end flex-1 justify-around mr-3`}>
+                  <Text style={tw`text-light font-bold text-2xl text-right`}>
+                    {restaurant.name}
+                  </Text>
+                  <Text style={tw`text-light font-thin text-right`}>
+                    {restaurant.address}
+                  </Text>
+                </View>
+              </TouchableOpacity>
             );
           })
         ) : (
-          <></>
+          <Text style={tw`text-light`}>You have no restaurants</Text>
         )}
         <TouchableHighlight
           underlayColor={tw`text-primary`["color"]}

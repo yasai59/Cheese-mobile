@@ -16,6 +16,7 @@ module.exports = {
         terciary: "#1A936F",
         light: "#D6D6D6",
         base: "#333533",
+        base2: "#333533",
         "base-dark": "#202020",
         "base-light": "#515451",
       },
