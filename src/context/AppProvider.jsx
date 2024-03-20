@@ -3,18 +3,40 @@ import { AppContext } from "./AppContext";
 import axios from "axios";
 import { getData, removeData, storeData } from "../storage/storageManager";
 import { GoogleSignin } from "@react-native-google-signin/google-signin";
+import { useNavigation } from "@react-navigation/native";
 
 export const AppProvider = ({ children }) => {
   const [token, setToken] = useState(null);
   const [user, setUser] = useState(null);
   const [tastes, setTastes] = useState([]);
   const [restrictions, setRestrictions] = useState([]);
+  const [restaurants, setRestaurants] = useState([]);
+
+  const navigate = useNavigation();
 
   const isLogged = !!token;
 
   useEffect(() => {
     loginLocal();
   }, []);
+
+  useEffect(() => {
+    if (!token) return;
+
+    axios.defaults.headers.common["x-token"] = `${token}`;
+    axios.get("/api/restaurant").then((res) => {
+      setRestaurants(res.data);
+    });
+    (async () => {
+      const resTastes = await axios.get("/api/taste");
+      setTastes(resTastes.data.tastes.map((t) => t.id));
+
+      if (resTastes.data.tastes.length === 0) navigate.navigate("Tastes");
+
+      const resRestrictions = await axios.get("/api/restriction");
+      setRestrictions(resRestrictions.data.restrictions.map((r) => r.id));
+    })();
+  }, [token]);
 
   const login = async (username, password) => {
     if (!username || !password) {
@@ -34,17 +56,8 @@ export const AppProvider = ({ children }) => {
 
   const loginToken = async (token, user) => {
     if (!token) return;
-    axios.defaults.headers.common["x-token"] = `${token}`;
     setUser(user);
     storeData("token", token);
-    try {
-      const resTastes = await axios.get("/api/taste");
-      setTastes(resTastes.data.tastes.map((t) => t.id));
-      const resRestrictions = await axios.get("/api/restriction");
-      setRestrictions(resRestrictions.data.restrictions.map((r) => r.id));
-    } catch (e) {
-      console.log(e.response.data.message);
-    }
     setToken(token);
   };
 
@@ -54,14 +67,6 @@ export const AppProvider = ({ children }) => {
       axios.defaults.headers.common["x-token"] = `${token}`;
       const res = await axios.get("/api/user/myUser");
       setUser(res.data.user);
-      try {
-        const resTastes = await axios.get("/api/taste");
-        setTastes(resTastes.data.tastes.map((t) => t.id));
-        const resRestrictions = await axios.get("/api/restriction");
-        setRestrictions(resRestrictions.data.restrictions.map((r) => r.id));
-      } catch (e) {
-        console.log(e.response.data.message);
-      }
       setToken(token);
     });
   };
@@ -116,6 +121,8 @@ export const AppProvider = ({ children }) => {
         setRestrictions: changeRestrictions,
         setTastes: changeTastes,
         loginToken,
+        restaurants,
+        setRestaurants,
       }}
     >
       {children}

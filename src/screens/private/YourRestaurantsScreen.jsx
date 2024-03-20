@@ -1,17 +1,48 @@
-import React from "react";
-import { ScrollView, Text, View } from "react-native";
+import React, { useContext, useEffect, useMemo, useState } from "react";
+import { Image, ScrollView, Text, View } from "react-native";
 import tw from "../../../twrnc";
 import { StatusBar } from "expo-status-bar";
 import { TouchableHighlight } from "react-native";
 import { useNavigation } from "@react-navigation/native";
+import axios from "axios";
+import { AppContext } from "../../context/AppContext";
 
 export const YourRestaurantsScreen = () => {
   const navigate = useNavigation();
 
+  const { restaurants } = useContext(AppContext);
+
+  // api/restaurant/profilephoto/:name
   return (
     <ScrollView style={tw`flex-1 bg-base-dark border-t border-base-light`}>
       <View style={tw`w-80 mx-auto mt-5`}>
         <Text style={tw`text-light text-4xl font-bold `}>Your Restaurants</Text>
+        {!!restaurants ? (
+          restaurants.map((restaurant) => {
+            console.log(
+              `${axios.defaults.baseURL}/api/restaurant/profilephoto/${restaurant.photo}`
+            );
+            return (
+              <View
+                key={restaurant.id}
+                style={tw`bg-base my-2 p-5 flex flex-row rounded-lg`}
+              >
+                <Image
+                  source={{
+                    uri: `${
+                      axios.defaults.baseURL
+                    }/api/restaurant/profilephoto/${
+                      restaurant.photo
+                    }?vacilada=${Date.now()}`,
+                  }}
+                />
+                <Text style={tw`text-light`}>{restaurant.name}</Text>
+              </View>
+            );
+          })
+        ) : (
+          <></>
+        )}
         <TouchableHighlight
           underlayColor={tw`text-primary`["color"]}
           onPress={() => {

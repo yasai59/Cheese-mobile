@@ -7,6 +7,7 @@ import { View } from "react-native";
 import tw from "./twrnc";
 import { useFonts } from "expo-font";
 import * as SplashScreen from "expo-splash-screen";
+import { NavigationContainer } from "@react-navigation/native";
 
 // SplashScreen.preventAutoHideAsync();
 
@@ -27,9 +28,11 @@ export default function App() {
   return (
     <View style={tw`bg-base-dark flex-1`} onLayout={onLayoutRootView}>
       <SafeAreaProvider>
-        <AppProvider>
-          <AppRouter />
-        </AppProvider>
+        <NavigationContainer>
+          <AppProvider>
+            <AppRouter />
+          </AppProvider>
+        </NavigationContainer>
       </SafeAreaProvider>
     </View>
   );
