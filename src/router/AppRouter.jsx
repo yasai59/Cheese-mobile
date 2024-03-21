@@ -10,6 +10,7 @@ import { ChangeField, ChangePassword } from "../screens/private/ChangePassword";
 import { TasteForm } from "../screens/private/forms/TasteForm";
 import { RestrictionForm } from "../screens/private/forms/RestrictionForm";
 import { AddRestaurant } from "../screens/private/restaurants/AddRestaurant";
+import { Restaurant } from "../screens/private/restaurants/Restaurant";
 
 export const AppRouter = () => {
   const { isLogged } = useContext(AppContext);

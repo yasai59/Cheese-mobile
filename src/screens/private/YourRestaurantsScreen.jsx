@@ -8,11 +8,15 @@ import axios from "axios";
 import { AppContext } from "../../context/AppContext";
 
 export const YourRestaurantsScreen = () => {
-  const navigate = useNavigation();
+  const navigation = useNavigation();
 
   const { restaurants } = useContext(AppContext);
 
   console.log(restaurants);
+
+  const handlePress = (id) => {
+    navigation.navigate("Restaurant", { id });
+  };
 
   // api/restaurant/profilephoto/:name
   return (
@@ -28,6 +32,7 @@ export const YourRestaurantsScreen = () => {
               <TouchableOpacity
                 key={restaurant.id}
                 style={tw`bg-base my-2 p-2 flex flex-row rounded-lg`}
+                onPress={() => handlePress(restaurant.id)}
               >
                 <Image
                   source={{
@@ -52,7 +57,7 @@ export const YourRestaurantsScreen = () => {
         <TouchableHighlight
           underlayColor={tw`text-primary`["color"]}
           onPress={() => {
-            navigate.navigate("AddRestaurant");
+            navigation.navigate("AddRestaurant");
           }}
           style={tw`rounded-lg w-50 self-center`}
         >

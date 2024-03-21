@@ -9,6 +9,7 @@ import { useContext } from "react";
 import { AppContext } from "../context/AppContext";
 import { YourRestaurantsScreen } from "../screens/private/YourRestaurantsScreen";
 import { Discover } from "../screens/private/Discover";
+import { Restaurant } from "../screens/private/restaurants/Restaurant";
 
 const Tab = createBottomTabNavigator();
 
@@ -28,9 +29,19 @@ const Home = () => {
 function MyTabBar({ state, descriptors, navigation }) {
   const { user } = useContext(AppContext);
 
+  const icons = {
+    Home: "home",
+    History: "heart",
+    YourRestaurants: "restaurant",
+    Favorites: "star",
+    Profile: "person",
+  };
+
   return (
     <View style={tw`flex-row`}>
       {state.routes.map((route, index) => {
+        if (icons[route.name] === undefined) return;
+
         const { options } = descriptors[route.key];
         const label =
           options.tabBarLabel !== undefined
@@ -61,14 +72,6 @@ function MyTabBar({ state, descriptors, navigation }) {
         };
 
         const color = tw`text-${isFocused ? "light" : "base-light"}`["color"];
-
-        const icons = {
-          Home: "home",
-          History: "heart",
-          Restaurants: "restaurant",
-          Favorites: "star",
-          Profile: "person",
-        };
 
         return (
           <TouchableHighlight
@@ -120,7 +123,7 @@ export const HomeTabs = ({ navigation }) => {
       />
       {user.role_id === 2 ? (
         <Tab.Screen
-          name="Restaurants"
+          name="YourRestaurants"
           component={YourRestaurantsScreen}
           options={{ headerShown: false }}
         />
@@ -135,6 +138,11 @@ export const HomeTabs = ({ navigation }) => {
       <Tab.Screen
         name="Profile"
         component={ProfileScreen}
+        options={{ headerShown: false }}
+      />
+      <Tab.Screen
+        name="Restaurant"
+        component={Restaurant}
         options={{ headerShown: false }}
       />
     </Tab.Navigator>
