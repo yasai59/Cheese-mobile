@@ -3,6 +3,7 @@ import React from "react";
 import { TouchableOpacity, View } from "react-native";
 import tw from "../../twrnc";
 import { LinearGradient } from "expo-linear-gradient";
+import { Pill } from "./Pill";
 
 // an option should look like this:
 // {
@@ -34,30 +35,12 @@ export const OptionSelecter = ({
         .map((option) => {
           return (
             <View key={option.id}>
-              {selectedOptions.includes(option.id) ? (
-                <TouchableOpacity onPress={() => handlePress(option.id)}>
-                  <LinearGradient
-                    colors={[
-                      tw`text-primary`["color"],
-                      tw`text-secondary`["color"],
-                    ]}
-                    style={tw`p-2 rounded-full px-3`}
-                    start={{ x: 0, y: 0.4 }}
-                    end={{ x: 0.7, y: 1 }}
-                  >
-                    <Text style={tw`font-bold text-base-light`}>
-                      {option.name}
-                    </Text>
-                  </LinearGradient>
-                </TouchableOpacity>
-              ) : (
-                <TouchableOpacity
-                  style={{ ...tw`bg-base-light p-2 rounded-full px-3` }}
-                  onPress={() => handlePress(option.id)}
-                >
-                  <Text style={tw`text-light`}>{option.name}</Text>
-                </TouchableOpacity>
-              )}
+              <Pill
+                active={selectedOptions.includes(option.id)}
+                key={option.id}
+                onPress={() => handlePress(option.id)}
+                text={option.name}
+              />
             </View>
           );
         })}
