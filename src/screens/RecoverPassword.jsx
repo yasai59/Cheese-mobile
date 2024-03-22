@@ -27,7 +27,6 @@ export const RecoverPassword = ({ navigation }) => {
           return;
         }
 
-        console.log(e.response.message);
         alert("Server error");
       });
   };

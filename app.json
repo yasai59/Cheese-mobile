@@ -23,7 +23,7 @@
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#ffffff"
       },
-      "package": "com.yasai.cheese",
+      "package": "com.yasai59.cheese",
       "googleServicesFile": "./google-services.json"
     },
     "web": {

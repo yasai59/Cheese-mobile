@@ -22,6 +22,14 @@
           }
         },
         {
+          "client_id": "92194054763-gm2nnm9119k4be6d662b12r8atspm2hm.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.yasai59.cheese",
+            "certificate_hash": "612ff7c07aabd09c3c661538032dd3a1150ce82a"
+          }
+        },
+        {
           "client_id": "92194054763-kcbdgjt4fesd0httgb3hi4solt7aqmrm.apps.googleusercontent.com",
           "client_type": 3
         }

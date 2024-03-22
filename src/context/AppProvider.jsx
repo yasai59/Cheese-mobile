@@ -12,6 +12,9 @@ export const AppProvider = ({ children }) => {
   const [restrictions, setRestrictions] = useState([]);
   const [restaurants, setRestaurants] = useState([]);
 
+  const [allTastes, setAllTastes] = useState([]);
+  const [allRestrictions, setAllRestrictions] = useState([]);
+
   const navigate = useNavigation();
 
   const isLogged = !!token;
@@ -40,6 +43,13 @@ export const AppProvider = ({ children }) => {
       const resRestrictions = await axios.get("/api/restriction");
       setRestrictions(resRestrictions.data.restrictions.map((r) => r.id));
     })();
+
+    axios.get("/api/taste/all").then((res) => {
+      setAllTastes(res.data.tastes);
+    });
+    axios.get("/api/restriction/all").then((res) => {
+      setAllRestrictions(res.data.restrictions);
+    });
   }, [token]);
 
   const login = async (username, password) => {
@@ -127,6 +137,8 @@ export const AppProvider = ({ children }) => {
         loginToken,
         restaurants,
         updateRestaurants,
+        allTastes,
+        allRestrictions,
       }}
     >
       {children}

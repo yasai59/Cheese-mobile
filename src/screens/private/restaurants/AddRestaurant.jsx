@@ -25,8 +25,6 @@ export const AddRestaurant = () => {
   const [carousel, setCarousel] = useState([]);
 
   const handleSubmit = async () => {
-    console.log("submit");
-
     const newImage = await resizeImage(image.uri);
 
     // formdata to send to the server
@@ -50,7 +48,6 @@ export const AddRestaurant = () => {
       });
     }
 
-    console.log(formData._parts);
     try {
       const res = await axios.post("/api/restaurant", formData, {
         headers: {

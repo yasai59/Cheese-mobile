@@ -3,7 +3,21 @@ import { TextInput } from "react-native";
 
 import tw from "../../twrnc";
 
-export const Input = ({ placeholder, className, type, value, onChange }) => {
+export const Input = ({
+  placeholder,
+  className,
+  type,
+  value,
+  onChange,
+  multiline = false,
+}) => {
+  const types = {
+    password: "text",
+    phone: "tel",
+    decimal: "decimal",
+    text: "text",
+  };
+
   return (
     <TextInput
       placeholder={placeholder}
@@ -11,8 +25,9 @@ export const Input = ({ placeholder, className, type, value, onChange }) => {
       secureTextEntry={type === "password"}
       value={value}
       onChangeText={onChange}
-      inputMode={type === "phone" ? "tel" : "text"}
+      inputMode={types[type] ?? "text"}
       placeholderTextColor={"#515451"}
+      multiline={multiline}
     />
   );
 };

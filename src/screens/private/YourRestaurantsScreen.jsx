@@ -12,8 +12,6 @@ export const YourRestaurantsScreen = () => {
 
   const { restaurants } = useContext(AppContext);
 
-  console.log(restaurants);
-
   const handlePress = (id) => {
     navigation.navigate("Restaurant", { id });
   };
@@ -25,9 +23,6 @@ export const YourRestaurantsScreen = () => {
         <Text style={tw`text-light text-4xl font-bold `}>Your Restaurants</Text>
         {!!restaurants ? (
           restaurants.map((restaurant) => {
-            console.log(
-              `${axios.defaults.baseURL}/api/restaurant/profilephoto/${restaurant.photo}`
-            );
             return (
               <TouchableOpacity
                 key={restaurant.id}

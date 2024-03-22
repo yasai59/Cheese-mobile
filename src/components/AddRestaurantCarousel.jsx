@@ -30,7 +30,6 @@ export const AddRestaurantCarousel = ({ setDefCarousel = () => {} }) => {
       multiple: true,
     });
     if (!result.canceled) {
-      console.log(result);
       setImages((prev) => {
         // delete coincidences and limit to 12 photos
         const arr = [...prev, ...result.assets];

@@ -61,7 +61,7 @@ export const LoginScreen = ({ navigation }) => {
           setIsLoading(false);
         });
     } catch (error) {
-      console.log(JSON.stringify(error));
+      console.log(error);
     }
   };
 

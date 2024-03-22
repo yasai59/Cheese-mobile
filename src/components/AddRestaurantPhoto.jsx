@@ -4,7 +4,7 @@ import tw from "../../twrnc";
 import { Feather } from "@expo/vector-icons";
 import * as DocumentPicker from "expo-document-picker";
 
-export const AddRestaurantPhoto = ({ setImageDef }) => {
+export const AddRestaurantPhoto = ({ setImageDef, className = "" }) => {
   const [image, setImage] = useState(null);
 
   const handlePickImage = async () => {
@@ -22,16 +22,16 @@ export const AddRestaurantPhoto = ({ setImageDef }) => {
   return (
     <>
       <TouchableOpacity
-        style={tw`rounded-full border-2 aspect-square ${
-          !image ? "border-dashed border-light" : ""
-        }  w-30 self-center justify-center items-center mt-3`}
+        style={tw`rounded-full aspect-square ${
+          !image ? "border-2 border-dashed border-light" : ""
+        }  w-30 self-center justify-center items-center mt-3 ${className}`}
         onPress={handlePickImage}
       >
         {image ? (
           <View style={tw`absolute w-full h-full`}>
             <Image
               source={{ uri: image.uri }}
-              style={tw`w-full h-full rounded-full`}
+              style={tw`w-full h-full rounded-full ${className}`}
             />
           </View>
         ) : (

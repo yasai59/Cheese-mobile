@@ -28,7 +28,6 @@ export const ChangePassword = ({ navigation }) => {
       });
       navigation.goBack();
     } catch (e) {
-      console.log(e.response.data.message);
       alert("Error changing the password");
     }
   };
