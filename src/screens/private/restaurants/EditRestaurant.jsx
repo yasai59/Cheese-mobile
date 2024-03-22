@@ -7,6 +7,7 @@ import Modal from "react-native-modal";
 import { useState } from "react";
 import { AddRestaurantPhoto, Input } from "../../../components";
 import { PillSelect } from "../../../components/PillSelect";
+import { InputImage } from "../../../components/InputImage";
 
 export const EditRestaurant = ({ restaurant, edit, setEdit }) => {
   const [addDishModal, setAddDishModal] = useState(false);
@@ -82,7 +83,20 @@ export const EditRestaurant = ({ restaurant, edit, setEdit }) => {
         {/* Order buttons */}
         <View>
           <Text style={tw`text-primary mt-3`}>Links</Text>
-          <View style={tw`w-64 mx-auto gap-5 mt-3`}></View>
+          <View style={tw`w-64 mx-auto gap-5 mt-3`}>
+            <InputImage
+              placeholder={"Glovo URL"}
+              image={require("../../../assets/glovo-icon.png")}
+            />
+            <InputImage
+              placeholder={"Uber eats URL"}
+              image={require("../../../assets/uber-eats-icon.png")}
+            />
+            <InputImage
+              placeholder={"Just eat URL"}
+              image={require("../../../assets/just-eat-icon.png")}
+            />
+          </View>
         </View>
         <Modal
           isVisible={addDishModal}
