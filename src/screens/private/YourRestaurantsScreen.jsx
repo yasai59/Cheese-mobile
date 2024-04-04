@@ -54,7 +54,7 @@ export const YourRestaurantsScreen = () => {
           onPress={() => {
             navigation.navigate("AddRestaurant");
           }}
-          style={tw`rounded-lg w-50 self-center`}
+          style={tw`rounded-lg w-50 self-center mb-5`}
         >
           <View style={tw`bg-transparent border border-primary rounded-lg p-2`}>
             <Text style={tw`text-base text-center text-primary`}>

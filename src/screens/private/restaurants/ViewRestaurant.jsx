@@ -55,7 +55,7 @@ const UberEatsBtn = ({ link }) => {
   );
 };
 
-export const ViewRestaurant = ({ restaurant, edit, setEdit }) => {
+export const ViewRestaurant = ({ restaurant, edit, setEdit, act }) => {
   return (
     <ScrollView style={tw`w-90 mx-auto mt-5`}>
       <View style={tw`border-b border-base-light pb-5`}>
@@ -76,7 +76,7 @@ export const ViewRestaurant = ({ restaurant, edit, setEdit }) => {
         </View>
         <Image
           source={{
-            uri: `${axios.defaults.baseURL}/api/restaurant/profilephoto/${restaurant.photo}`,
+            uri: `${axios.defaults.baseURL}/api/restaurant/profilephoto/${restaurant.photo}?xd=${act}`,
           }}
           style={tw`h-36 w-36 rounded-full mx-auto my-5`}
         />

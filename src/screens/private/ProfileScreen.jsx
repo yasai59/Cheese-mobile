@@ -3,7 +3,6 @@ import { Image, Text, Alert, TouchableOpacity, ScrollView } from "react-native";
 import { StatusBar } from "expo-status-bar";
 import { useNavigation } from "@react-navigation/native";
 import * as DocumentPicker from "expo-document-picker";
-import { Image as ImageResizer } from "react-native-compressor";
 import axios from "axios";
 
 import { AppContext } from "../../context/AppContext";

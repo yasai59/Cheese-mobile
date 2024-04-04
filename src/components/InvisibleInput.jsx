@@ -8,6 +8,7 @@ export const InvisibleInput = ({ className, type, value, onChange }) => {
     <TextInput
       style={tw`text-light ${className}`}
       secureTextEntry={type === "password"}
+      inputMode={type === "tel" ? "tel" : "text"}
       value={value}
       onChangeText={onChange}
     />

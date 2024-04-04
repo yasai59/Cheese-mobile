@@ -2,21 +2,99 @@ import { Image, ScrollView, Text, TouchableOpacity, View } from "react-native";
 import tw from "../../../../twrnc";
 import axios from "axios";
 import { MaterialCommunityIcons, Entypo } from "@expo/vector-icons";
+import * as DocumentPicker from "expo-document-picker";
+import { resizeImage } from "../../../helpers/resizeImage";
 
 import Modal from "react-native-modal";
-import { useState } from "react";
-import { AddRestaurantPhoto, Input } from "../../../components";
+import { useEffect, useState } from "react";
+import { AddRestaurantPhoto, Input, InvisibleInput } from "../../../components";
 import { PillSelect } from "../../../components/PillSelect";
 import { InputImage } from "../../../components/InputImage";
 
-export const EditRestaurant = ({ restaurant, edit, setEdit }) => {
+export const EditRestaurant = ({
+  restaurant,
+  edit,
+  setEdit,
+  act,
+  setAct,
+  setRestaurant,
+}) => {
   const [addDishModal, setAddDishModal] = useState(false);
   const [dishImage, setDishImage] = useState(null);
+  const [tempRes, setTempRes] = useState(restaurant);
+  const [changes, setChanges] = useState(false);
+
+  const handleChangePhoto = async () => {
+    try {
+      const doc = await DocumentPicker.getDocumentAsync({
+        type: "image/*",
+      });
+
+      if (doc.canceled) return;
+      const image = doc.assets[0];
+
+      const resizedImage = await resizeImage(image.uri);
+
+      const data = new FormData();
+
+      data.append("photo", {
+        name: resizedImage.split("/").pop(),
+        type: "image/png",
+        uri: resizedImage,
+      });
+
+      data.append("id", restaurant.id);
+
+      const res = await axios.post(
+        "/api/restaurant/photo/profile-picture",
+        data,
+        {
+          headers: {
+            "Content-Type": "multipart/form-data",
+          },
+        }
+      );
+
+      console.log(res.data);
+      setRestaurant(res.data.restaurant);
+      setTempRes((prev) => {
+        return { ...prev, photo: res.data.photo };
+      });
+
+      setAct(Date.now());
+    } catch (e) {
+      console.log(e.response.data);
+      alert("error changing the photo");
+    }
+  };
+
+  useEffect(() => {
+    setChanges(JSON.stringify(tempRes) !== JSON.stringify(restaurant));
+  }, [tempRes]);
+
+  const saveChanges = async () => {
+    console.log("saving changes...");
+    const { dishes, photo } = restaurant;
+    const saveRes = { ...tempRes, dishes, photo };
+    await axios.put("/api/restaurant", saveRes);
+    console.log("changes saved");
+    setRestaurant(saveRes);
+    setTempRes(saveRes);
+  };
 
   return (
     <>
       <ScrollView style={tw`w-90 mx-auto mt-5 flex-1`}>
         <View style={tw`border-b border-base-light pb-5`}>
+          {changes && (
+            <TouchableOpacity
+              style={tw`bg-primary py-2 rounded-lg w-20`}
+              onPress={saveChanges}
+            >
+              <Text style={tw`text-black text-center font-bold`}>Save</Text>
+            </TouchableOpacity>
+          )}
+          {/* save btn */}
           <View style={tw`flex-row justify-between items-center flex-wrap`}>
             <Text style={tw`text-light text-4xl font-bold`}>
               {restaurant.name}
@@ -32,20 +110,31 @@ export const EditRestaurant = ({ restaurant, edit, setEdit }) => {
               />
             </TouchableOpacity>
           </View>
-          <Image
-            source={{
-              uri: `${axios.defaults.baseURL}/api/restaurant/profilephoto/${restaurant.photo}`,
-            }}
-            style={tw`h-36 w-36 rounded-full mx-auto my-5`}
-          />
+          <TouchableOpacity onPress={handleChangePhoto}>
+            <Image
+              source={{
+                uri: `${axios.defaults.baseURL}/api/restaurant/profilephoto/${restaurant.photo}?xd=${act}`,
+              }}
+              style={tw`h-36 w-36 rounded-full mx-auto my-5`}
+            />
+          </TouchableOpacity>
           {/* dirección */}
-          <Text style={tw`text-light text-base font-thin`}>
-            {restaurant.address}
-          </Text>
+          <InvisibleInput
+            value={tempRes.address}
+            onChange={(value) => {
+              setTempRes({ ...tempRes, address: value });
+            }}
+            className={"text-light text-base font-thin"}
+          />
           {/* teléfono */}
-          <Text style={tw`text-light text-base font-thin`}>
-            {restaurant.phone}
-          </Text>
+          <InvisibleInput
+            value={tempRes.phone}
+            onChange={(value) => {
+              setTempRes({ ...tempRes, phone: value });
+            }}
+            className={"text-light text-base font-thin"}
+            type={"tel"}
+          />
         </View>
         <View
           style={tw`py-3 border-b border-base-light flex-row justify-between items-center`}
@@ -59,7 +148,7 @@ export const EditRestaurant = ({ restaurant, edit, setEdit }) => {
           </TouchableOpacity>
         </View>
         <View>
-          {restaurant.dishes.map((dish) => {
+          {restaurant?.dishes.map((dish) => {
             return (
               <View key={dish.id} style={tw`border-b border-base-light py-2`}>
                 <TouchableOpacity style={tw`flex-row`}>
@@ -87,14 +176,26 @@ export const EditRestaurant = ({ restaurant, edit, setEdit }) => {
             <InputImage
               placeholder={"Glovo URL"}
               image={require("../../../assets/glovo-icon.png")}
+              value={tempRes.link_glovo}
+              setValue={(value) => {
+                setTempRes({ ...tempRes, link_glovo: value || null });
+              }}
             />
             <InputImage
               placeholder={"Uber eats URL"}
               image={require("../../../assets/uber-eats-icon.png")}
+              value={tempRes.link_uber_eats}
+              setValue={(value) => {
+                setTempRes({ ...tempRes, link_uber_eats: value || null });
+              }}
             />
             <InputImage
               placeholder={"Just eat URL"}
               image={require("../../../assets/just-eat-icon.png")}
+              value={tempRes.link_just_eat}
+              setValue={(value) => {
+                setTempRes({ ...tempRes, link_just_eat: value || null });
+              }}
             />
           </View>
         </View>

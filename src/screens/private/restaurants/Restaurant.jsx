@@ -79,6 +79,8 @@ export const Restaurant = ({ route, navigation }) => {
     setEdit(false);
   }, [id]);
 
+  const [act, setAct] = useState(Date.now());
+
   return (
     <>
       <View
@@ -88,14 +90,18 @@ export const Restaurant = ({ route, navigation }) => {
         {edit ? (
           <EditRestaurant
             restaurant={restaurant}
+            setRestaurant={setRestaurant}
             edit={edit}
             setEdit={setEdit}
+            act={act}
+            setAct={setAct}
           />
         ) : (
           <ViewRestaurant
             restaurant={restaurant}
             edit={edit}
             setEdit={setEdit}
+            act={act}
           />
         )}
       </View>

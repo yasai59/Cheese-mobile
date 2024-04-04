@@ -54,6 +54,7 @@ export const AddRestaurant = () => {
           "Content-Type": "multipart/form-data",
         },
       });
+
       updateRestaurants();
       navigation.goBack();
     } catch (e) {
