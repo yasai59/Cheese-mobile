@@ -1,17 +1,24 @@
 import { LinearGradient } from "expo-linear-gradient";
 import React from "react";
-import { Text, TouchableOpacity } from "react-native";
+import { Text, TouchableOpacity, View } from "react-native";
 import tw from "../../twrnc";
 
-export const Pill = ({
-  active = false,
-  onPress = () => {},
-  text = "",
-  className,
-}) => {
+const Wrapper = ({ children, onPress, style = "" }) => {
+  if (onPress) {
+    return (
+      <TouchableOpacity onPress={onPress} style={style}>
+        {children}
+      </TouchableOpacity>
+    );
+  }
+
+  return <View>{children}</View>;
+};
+
+export const Pill = ({ active = false, onPress, text = "", className }) => {
   if (active) {
     return (
-      <TouchableOpacity onPress={onPress}>
+      <Wrapper onPress={onPress}>
         <LinearGradient
           colors={[tw`text-primary`["color"], tw`text-secondary`["color"]]}
           style={tw`p-2 rounded-full px-3`}
@@ -22,16 +29,16 @@ export const Pill = ({
             {text}
           </Text>
         </LinearGradient>
-      </TouchableOpacity>
+      </Wrapper>
     );
   }
 
   return (
-    <TouchableOpacity
+    <Wrapper
       style={{ ...tw`bg-base-light p-2 rounded-full px-3 ` }}
       onPress={onPress}
     >
       <Text style={tw`text-light text-base ${className}`}>{text}</Text>
-    </TouchableOpacity>
+    </Wrapper>
   );
 };

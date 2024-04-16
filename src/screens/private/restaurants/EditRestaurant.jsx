@@ -1,16 +1,15 @@
 import { Image, ScrollView, Text, TouchableOpacity, View } from "react-native";
-import tw from "../../../../twrnc";
 import axios from "axios";
-import { MaterialCommunityIcons, Entypo } from "@expo/vector-icons";
+import { MaterialCommunityIcons } from "@expo/vector-icons";
 import * as DocumentPicker from "expo-document-picker";
-import { resizeImage } from "../../../helpers/resizeImage";
-
-import Modal from "react-native-modal";
 import { useEffect, useState } from "react";
-import { AddRestaurantPhoto, Input, InvisibleInput } from "../../../components";
-import { PillSelect } from "../../../components/PillSelect";
+
+import { resizeImage } from "../../../helpers/resizeImage";
+import tw from "../../../../twrnc";
+import { InvisibleInput } from "../../../components";
 import { InputImage } from "../../../components/InputImage";
 import { AddRestaurantCarousel } from "../../../components/AddRestaurantCarousel";
+import { AddDish } from "./AddDish";
 
 export const EditRestaurant = ({
   restaurant,
@@ -21,9 +20,10 @@ export const EditRestaurant = ({
   setRestaurant,
 }) => {
   const [addDishModal, setAddDishModal] = useState(false);
-  const [dishImage, setDishImage] = useState(null);
   const [tempRes, setTempRes] = useState(restaurant);
   const [changes, setChanges] = useState(false);
+
+  console.log(restaurant);
 
   const [carousel, setCarousel] = useState([]);
   useEffect(() => {
@@ -252,53 +252,11 @@ export const EditRestaurant = ({
             setDefCarousel={updateImages}
           />
         </View>
-        <Modal
-          isVisible={addDishModal}
-          onBackButtonPress={() => setAddDishModal(false)}
-        >
-          <View
-            style={tw`bg-base-dark rounded-lg border-2 border-base relative`}
-          >
-            <Text style={tw`text-light font-bold text-xl mt-10 text-center`}>
-              Add dish
-            </Text>
-            <TouchableOpacity
-              style={tw`absolute top-0 right-0 p-5`}
-              onPress={() => setAddDishModal(false)}
-            >
-              <Entypo name="cross" size={32} color={tw`text-light`["color"]} />
-            </TouchableOpacity>
-            <View style={tw`w-[80%] mx-auto gap-2`}>
-              <Text style={tw`text-light`}>Name</Text>
-              <Input placeholder="Name" className={`h-10`} />
-              <Text style={tw`text-light`}>Description</Text>
-              <Input
-                placeholder="Description"
-                className={`h-30 justify-start items-start`}
-                multiline={true}
-              />
-              <Text style={tw`text-light`}>Price</Text>
-              <Input placeholder="Price" className={`h-10`} type={"decimal"} />
-              {/* TODO: change photo input, tastes and restrictions */}
-              <Text style={tw`text-light`}>Photo</Text>
-              <AddRestaurantPhoto
-                setImageDef={setDishImage}
-                className="rounded-lg"
-              />
-              <Text style={tw`text-light`}>Tastes</Text>
-              <PillSelect />
-              <Text style={tw`text-light`}>Restrictions</Text>
-              <TouchableOpacity
-                style={tw`bg-primary p-3 rounded-lg my-5 w-[50%] mx-auto`}
-                onPress={() => {}}
-              >
-                <Text style={tw`text-black text-center font-bold text-xl`}>
-                  Add
-                </Text>
-              </TouchableOpacity>
-            </View>
-          </View>
-        </Modal>
+        <AddDish
+          addDishModal={addDishModal}
+          setAddDishModal={setAddDishModal}
+          restaurantId={restaurant.id}
+        />
       </ScrollView>
     </>
   );
