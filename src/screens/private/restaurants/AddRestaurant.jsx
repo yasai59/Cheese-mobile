@@ -104,7 +104,7 @@ export const AddRestaurant = () => {
           <AddRestaurantPhoto setImageDef={setImage} />
         </View>
         <View style={tw`border-b border-base-light w-full pb-5`}></View>
-        <View style={tw`w-90 self-center`}>
+        <View style={tw`w-90 self-center mb-2 `}>
           <View style={tw`flex-row items-end mt-5`}>
             <Text style={tw`text-primary text-[18px]`}>Your carousel</Text>
             <Text style={tw`text-light text-[13px]`}>

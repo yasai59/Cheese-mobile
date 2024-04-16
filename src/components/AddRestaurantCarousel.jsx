@@ -20,8 +20,11 @@ const CarouselItem = ({ image, handleDelete }) => {
   );
 };
 
-export const AddRestaurantCarousel = ({ setDefCarousel = () => {} }) => {
-  const [images, setImages] = useState([]);
+export const AddRestaurantCarousel = ({
+  setDefCarousel = () => {},
+  defImages = useState([])[0],
+}) => {
+  const [images, setImages] = useState(defImages);
 
   const handlePickImage = async () => {
     const result = await DocumentPicker.getDocumentAsync({
@@ -42,8 +45,15 @@ export const AddRestaurantCarousel = ({ setDefCarousel = () => {} }) => {
   };
 
   useEffect(() => {
-    setDefCarousel(images);
+    // test if images have changed
+    if (JSON.stringify(images) !== JSON.stringify(defImages)) {
+      setDefCarousel(images);
+    }
   }, [images]);
+
+  useEffect(() => {
+    setImages(defImages);
+  }, [defImages]);
 
   return (
     <>

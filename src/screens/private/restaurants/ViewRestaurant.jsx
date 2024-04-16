@@ -90,7 +90,7 @@ export const ViewRestaurant = ({ restaurant, edit, setEdit, act }) => {
         </Text>
       </View>
       <View>
-        {restaurant.dishes.map((dish) => {
+        {restaurant.dishes?.map((dish) => {
           return (
             <View key={dish.id} style={tw`border-b border-base-light py-2`}>
               <TouchableOpacity style={tw`flex-row`}>

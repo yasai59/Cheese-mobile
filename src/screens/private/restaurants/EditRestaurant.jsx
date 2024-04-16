@@ -10,6 +10,7 @@ import { useEffect, useState } from "react";
 import { AddRestaurantPhoto, Input, InvisibleInput } from "../../../components";
 import { PillSelect } from "../../../components/PillSelect";
 import { InputImage } from "../../../components/InputImage";
+import { AddRestaurantCarousel } from "../../../components/AddRestaurantCarousel";
 
 export const EditRestaurant = ({
   restaurant,
@@ -23,6 +24,23 @@ export const EditRestaurant = ({
   const [dishImage, setDishImage] = useState(null);
   const [tempRes, setTempRes] = useState(restaurant);
   const [changes, setChanges] = useState(false);
+
+  const [carousel, setCarousel] = useState([]);
+  useEffect(() => {
+    axios
+      .get("/api/restaurant/carousel/" + restaurant.id)
+      .then((res) => {
+        const images = res.data.map((img) => {
+          return {
+            uri: `${axios.defaults.baseURL}/api/restaurant/carousel/photo/${img}`,
+            type: "image/png",
+            name: img,
+          };
+        });
+        setCarousel(images);
+      })
+      .catch((e) => {});
+  }, []);
 
   const handleChangePhoto = async () => {
     try {
@@ -55,7 +73,6 @@ export const EditRestaurant = ({
         }
       );
 
-      console.log(res.data);
       setRestaurant(res.data.restaurant);
       setTempRes((prev) => {
         return { ...prev, photo: res.data.photo };
@@ -63,7 +80,6 @@ export const EditRestaurant = ({
 
       setAct(Date.now());
     } catch (e) {
-      console.log(e.response.data);
       alert("error changing the photo");
     }
   };
@@ -73,13 +89,43 @@ export const EditRestaurant = ({
   }, [tempRes]);
 
   const saveChanges = async () => {
-    console.log("saving changes...");
     const { dishes, photo } = restaurant;
     const saveRes = { ...tempRes, dishes, photo };
     await axios.put("/api/restaurant", saveRes);
-    console.log("changes saved");
     setRestaurant(saveRes);
     setTempRes(saveRes);
+  };
+
+  const updateImages = async (images) => {
+    console.log(images);
+    const data = new FormData();
+    for (let image of images) {
+      if (!image.uri.includes("http")) {
+        const resizedImage = await resizeImage(image.uri);
+        data.append("photo", {
+          name: resizedImage.split("/").pop(),
+          type: "image/png",
+          uri: resizedImage,
+        });
+      } else {
+        data.append("photo", image);
+      }
+    }
+    try {
+      const res = await axios.put(
+        "/api/restaurant/photo/carousel/" + restaurant.id,
+        data,
+        {
+          headers: {
+            "Content-Type": "multipart/form-data",
+          },
+        }
+      );
+
+      console.log(res.data);
+    } catch (e) {
+      console.log(e);
+    }
   };
 
   return (
@@ -148,7 +194,7 @@ export const EditRestaurant = ({
           </TouchableOpacity>
         </View>
         <View>
-          {restaurant?.dishes.map((dish) => {
+          {restaurant.dishes?.map((dish) => {
             return (
               <View key={dish.id} style={tw`border-b border-base-light py-2`}>
                 <TouchableOpacity style={tw`flex-row`}>
@@ -172,7 +218,7 @@ export const EditRestaurant = ({
         {/* Order buttons */}
         <View>
           <Text style={tw`text-primary mt-3`}>Links</Text>
-          <View style={tw`w-64 mx-auto gap-5 mt-3`}>
+          <View style={tw`w-full mx-auto gap-5 mt-3`}>
             <InputImage
               placeholder={"Glovo URL"}
               image={require("../../../assets/glovo-icon.png")}
@@ -198,6 +244,13 @@ export const EditRestaurant = ({
               }}
             />
           </View>
+        </View>
+        <View style={tw`mb-3`}>
+          <Text style={tw`text-primary mt-3`}>Your photos</Text>
+          <AddRestaurantCarousel
+            defImages={carousel}
+            setDefCarousel={updateImages}
+          />
         </View>
         <Modal
           isVisible={addDishModal}
