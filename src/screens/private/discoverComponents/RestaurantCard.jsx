@@ -6,9 +6,11 @@ import { LinearGradient } from "expo-linear-gradient";
 import { Entypo } from "@expo/vector-icons";
 import { DraxProvider, DraxView } from "react-native-drax";
 import Animated, {
+  Easing,
   useAnimatedStyle,
   useSharedValue,
   withSpring,
+  withTiming,
 } from "react-native-reanimated";
 
 const RestaurantDetails = ({ restaurant, activePhoto }) => {
@@ -46,9 +48,11 @@ const RestaurantDetails = ({ restaurant, activePhoto }) => {
   return details[activePhoto % details.length];
 };
 
-export const RestaurantCard = ({ restaurant }) => {
+export const RestaurantCard = ({ restaurant, goNext }) => {
   const svMove = useSharedValue(0);
   const svRotate = useSharedValue(0);
+  const svOpacity = useSharedValue(1);
+  const svScale = useSharedValue(100);
 
   const totalImages = restaurant.carousel.length;
 
@@ -69,34 +73,58 @@ export const RestaurantCard = ({ restaurant }) => {
     svRotate.value = event.dragTranslation.x / 10;
   };
 
-  const gotoZero = async (pos) => {
+  const gotoZero = async () => {
     svMove.value = withSpring(0);
     svRotate.value = withSpring(0);
+  };
+
+  const handleGoNext = (like) => {
+    console.log("like", like);
+
+    if (like) {
+      svMove.value = withSpring(600);
+      svRotate.value = withSpring(60);
+    } else {
+      svMove.value = withSpring(-600);
+      svRotate.value = withSpring(-60);
+    }
+
+    setTimeout(() => {
+      svOpacity.value = 0;
+      svMove.value = 0;
+      svRotate.value = 0;
+      svScale.value = 10;
+      goNext(like);
+      svOpacity.value = withSpring(1, {
+        duration: 500,
+      });
+      svScale.value = withTiming(100, {
+        duration: 350,
+        easing: Easing.elastic(0.7),
+      });
+    }, 100);
   };
 
   const handleDragEnd = (event) => {
     console.log("Drag end");
     if (event.dragTranslation.x > 130) {
-      console.log("like");
+      return handleGoNext(true);
     }
 
     if (event.dragTranslation.x < -130) {
-      console.log("dislike");
+      return handleGoNext(false);
     }
 
-    gotoZero(event.dragTranslation.x);
+    gotoZero();
   };
-
-  useEffect(() => {
-    svMove.value = withSpring(0);
-    svRotate.value = withSpring(0);
-  }, []);
 
   const animatedStyle = useAnimatedStyle(() => {
     return {
+      opacity: svOpacity.value,
       transform: [
         { translateX: svMove.value },
         { rotate: svRotate.value + "deg" },
+        { scale: svScale.value / 100 },
       ],
     };
   });
@@ -104,7 +132,7 @@ export const RestaurantCard = ({ restaurant }) => {
   return (
     <DraxProvider>
       <Animated.View style={[animatedStyle]}>
-        <View style={tw`flex-row absolute z-50 h-full w-full`}>
+        <View style={tw`flex-row absolute z-50 h-[84%] w-full`}>
           <TouchableOpacity
             style={tw`z-10 w-20 h-full`}
             onPress={() => handleChangePhoto(-1)}
@@ -153,7 +181,8 @@ export const RestaurantCard = ({ restaurant }) => {
           </View>
           <View style={tw`flex-row justify-around w-full`}>
             <TouchableOpacity
-              style={tw`bg-base w-20 h-20 items-center justify-center rounded-full`}
+              style={tw`bg-base w-20 h-20 items-center justify-center rounded-full z-50`}
+              onPress={() => handleGoNext(false)}
             >
               <Entypo
                 name="cross"
@@ -162,7 +191,8 @@ export const RestaurantCard = ({ restaurant }) => {
               />
             </TouchableOpacity>
             <TouchableOpacity
-              style={tw`bg-base w-20 h-20 items-center justify-center rounded-full`}
+              style={tw`bg-base w-20 h-20 items-center justify-center rounded-full z-50`}
+              onPress={() => handleGoNext(true)}
             >
               <Entypo
                 name="check"
