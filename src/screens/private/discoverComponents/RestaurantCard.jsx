@@ -95,6 +95,7 @@ export const RestaurantCard = ({ restaurant, goNext }) => {
       svRotate.value = 0;
       svScale.value = 10;
       goNext(like);
+      setActivePhoto(0);
       svOpacity.value = withSpring(1, {
         duration: 500,
       });
@@ -102,7 +103,7 @@ export const RestaurantCard = ({ restaurant, goNext }) => {
         duration: 350,
         easing: Easing.elastic(0.7),
       });
-    }, 100);
+    }, 200);
   };
 
   const handleDragEnd = (event) => {
@@ -153,6 +154,7 @@ export const RestaurantCard = ({ restaurant, goNext }) => {
         <View style={tw`flex flex-row absolute mt-5 w-full gap-2 px-2 z-10`}>
           {restaurant.carousel.map((photo, index) => (
             <View
+              key={index}
               style={tw`border-2 border-light flex-grow h-2 rounded-full ${
                 index <= activePhoto ? "bg-light" : ""
               }`}
@@ -184,21 +186,19 @@ export const RestaurantCard = ({ restaurant, goNext }) => {
               style={tw`bg-base w-20 h-20 items-center justify-center rounded-full z-50`}
               onPress={() => handleGoNext(false)}
             >
-              <Entypo
-                name="cross"
-                size={65}
-                color={tw`text-secondary`["color"]}
-              />
+              <Image
+                source={require("../../../assets/cross.png")}
+                style={tw`w-10 h-10`}
+              ></Image>
             </TouchableOpacity>
             <TouchableOpacity
               style={tw`bg-base w-20 h-20 items-center justify-center rounded-full z-50`}
               onPress={() => handleGoNext(true)}
             >
-              <Entypo
-                name="check"
-                size={55}
-                color={tw`text-terciary`["color"]}
-              ></Entypo>
+              <Image
+                source={require("../../../assets/tick.png")}
+                style={tw`w-13 h-10`}
+              ></Image>
             </TouchableOpacity>
           </View>
         </View>
