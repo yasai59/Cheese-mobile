@@ -2,6 +2,7 @@ import { StatusBar } from "expo-status-bar";
 import { Text, View } from "react-native";
 import tw from "../../../twrnc";
 import { RestaurantCard } from "./discoverComponents/RestaurantCard";
+import { DraxProvider, DraxView } from "react-native-drax";
 
 export const Discover = () => {
   const restaurants = [
@@ -49,7 +50,7 @@ export const Discover = () => {
       }}
     >
       {restaurants.map((restaurant) => (
-        <RestaurantCard key={restaurant.id} restaurant={restaurant} />
+        <RestaurantCard restaurant={restaurant} key={restaurant.id} />
       ))}
       <StatusBar style="light" />
     </View>

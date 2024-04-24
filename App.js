@@ -8,6 +8,8 @@ import tw from "./twrnc";
 import { useFonts } from "expo-font";
 import * as SplashScreen from "expo-splash-screen";
 import { NavigationContainer } from "@react-navigation/native";
+import { DraxProvider } from "react-native-drax";
+import { GestureHandlerRootView } from "react-native-gesture-handler";
 
 // SplashScreen.preventAutoHideAsync();
 
@@ -26,7 +28,10 @@ export default function App() {
   }, [fontsLoaded, fontError]);
 
   return (
-    <View style={tw`bg-base-dark flex-1`} onLayout={onLayoutRootView}>
+    <GestureHandlerRootView
+      style={tw`bg-base-dark flex-1`}
+      onLayout={onLayoutRootView}
+    >
       <SafeAreaProvider>
         <NavigationContainer>
           <AppProvider>
@@ -34,6 +39,6 @@ export default function App() {
           </AppProvider>
         </NavigationContainer>
       </SafeAreaProvider>
-    </View>
+    </GestureHandlerRootView>
   );
 }
