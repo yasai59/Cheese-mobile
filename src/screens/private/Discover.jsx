@@ -2,78 +2,50 @@ import { StatusBar } from "expo-status-bar";
 import { Text, View } from "react-native";
 import tw from "../../../twrnc";
 import { RestaurantCard } from "./discoverComponents/RestaurantCard";
-import { DraxProvider, DraxView } from "react-native-drax";
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { Loading } from "../../components/Loading";
+import axios from "axios";
+import { LikedRestaurants } from "./LikedRestaurants";
 
 export const Discover = () => {
-  const restaurants = [
-    {
-      id: 1,
-      name: "Restaurant 1",
-      address: "Address 1",
-      creation_date: "2021-01-01",
-      link_glovo: "https://glovoapp.com",
-      link_ubereats: "https://ubereats.com",
-      link_just_eat: "https://justeat.com",
-      phone: "656265459",
-      photo: "https://via.placeholder.com/150",
-      description: "Description 1",
-      active_suscription: false,
-      carousel: [
-        "Arnau2_26e31329-84cf-4dd0-8dfa-d941d4838a581712656945939.JPEG",
-        "undefined_0c3aaa66-7e29-4a6a-a4ef-23d7ba0638aa1713255736225.jpg",
-        "undefined_1c5c97a8-2863-4aa3-9298-b7fda5464faa1713256347910.jpeg",
-        "undefined_6b47925f-b0a5-446d-81bb-21a59f41eb391713255636772.jpg",
-      ],
-      dishes: [
-        {
-          id: 1,
-          name: "Dish 1",
-          photo:
-            "undefined_598779ff-0e60-4e61-8c6b-933d8e9540851713263884787.jpeg",
-          description: "Description 1",
-          price: 10,
-          tastes: [{ id: 1, name: "Meat" }],
-          restrictions: [{ id: 6, name: "Fruits" }],
-        },
-      ],
-    },
-    {
-      id: 2,
-      name: "Restaurant 1",
-      address: "Address 1",
-      creation_date: "2021-01-01",
-      link_glovo: "https://glovoapp.com",
-      link_ubereats: "https://ubereats.com",
-      link_just_eat: "https://justeat.com",
-      phone: "656265459",
-      photo: "https://via.placeholder.com/150",
-      description: "Description 1",
-      active_suscription: false,
-      carousel: [
-        "undefined_1c5c97a8-2863-4aa3-9298-b7fda5464faa1713256347910.jpeg",
-        "Arnau2_26e31329-84cf-4dd0-8dfa-d941d4838a581712656945939.JPEG",
-        "undefined_0c3aaa66-7e29-4a6a-a4ef-23d7ba0638aa1713255736225.jpg",
-        "undefined_6b47925f-b0a5-446d-81bb-21a59f41eb391713255636772.jpg",
-      ],
-      dishes: [
-        {
-          id: 1,
-          name: "Dish 1",
-          photo:
-            "undefined_598779ff-0e60-4e61-8c6b-933d8e9540851713263884787.jpeg",
-          description: "Description 1",
-          price: 10,
-          tastes: [{ id: 1, name: "Meat" }],
-          restrictions: [{ id: 6, name: "Fruits" }],
-        },
-      ],
-    },
-  ];
+  const [restaurants, setRestaurants] = useState([]);
+  const [arrLiked, setArrLiked] = useState([]);
+  const [final, setFinal] = useState(false);
 
   const [activeRestaurant, setActiveRestaurant] = useState(0);
 
+  const [update, setUpdate] = useState(false);
+
+  useEffect(() => {
+    setFinal(false);
+    setArrLiked([]);
+    setActiveRestaurant(0);
+    setRestaurants([]);
+    axios.get("/api/restaurant/getRecommendations").then((res) => {
+      if (res.data.recomendations.length == 0) {
+        return setRestaurants("No restaurants found");
+      }
+      setRestaurants(res.data.recomendations);
+    });
+  }, [update]);
+
+  const handleUpdate = () => {
+    setUpdate((prev) => !prev);
+  };
+
   const goNext = (liked = false) => {
+    if (liked) {
+      axios.post(
+        "/api/restaurant/like-restaurant/" + restaurants[activeRestaurant].id
+      );
+      setArrLiked((prev) => [...prev, restaurants[activeRestaurant]]);
+    }
+
+    if (activeRestaurant == restaurants.length - 1) {
+      setFinal(true);
+      return;
+    }
+
     setActiveRestaurant((prev) => {
       let next = prev + 1;
       if (next >= restaurants.length) {
@@ -83,16 +55,46 @@ export const Discover = () => {
     });
   };
 
+  if (final)
+    return (
+      <View
+        style={{
+          ...tw`flex-1 bg-base-dark border-t border-base-light`,
+        }}
+      >
+        <LikedRestaurants restaurants={arrLiked} handleNext={handleUpdate} />
+      </View>
+    );
+
   return (
     <View
       style={{
         ...tw`flex-1 bg-base-dark border-t border-base-light`,
       }}
     >
-      <RestaurantCard
-        restaurant={restaurants[activeRestaurant]}
-        goNext={goNext}
-      />
+      {
+        // If no restaurants are found, display a message
+        restaurants == "No restaurants found" && (
+          <View style={tw`flex-1 items-center justify-center`}>
+            <Text style={tw`text-light text-2xl`}>
+              We ran out of restaurants!
+            </Text>
+            <Text style={tw`text-light text-lg`}>
+              Come tomorrow to see more!
+            </Text>
+          </View>
+        )
+      }
+      {restaurants.length == 0 ? (
+        <Loading isLoading={true} />
+      ) : restaurants == "No restaurants found" ? (
+        <></>
+      ) : (
+        <RestaurantCard
+          restaurant={restaurants[activeRestaurant]}
+          goNext={goNext}
+        />
+      )}
       <StatusBar style="light" />
     </View>
   );

@@ -25,6 +25,10 @@ export const AppProvider = ({ children }) => {
     });
   };
 
+  const addRestaurant = (restaurant) => {
+    setRestaurants((prev) => [...prev, restaurant]);
+  };
+
   useEffect(() => {
     loginLocal();
   }, []);
@@ -134,6 +138,7 @@ export const AppProvider = ({ children }) => {
         restrictions,
         setRestrictions: changeRestrictions,
         setTastes: changeTastes,
+        addRestaurant,
         loginToken,
         restaurants,
         updateRestaurants,

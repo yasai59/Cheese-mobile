@@ -9,6 +9,8 @@ import {
 import tw from "../../../../twrnc";
 import axios from "axios";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
+import { useContext } from "react";
+import { AppContext } from "../../../context/AppContext";
 
 const handleOrderPress = (link) => {
   Linking.openURL(link);
@@ -56,6 +58,8 @@ const UberEatsBtn = ({ link }) => {
 };
 
 export const ViewRestaurant = ({ restaurant, edit, setEdit, act }) => {
+  const { user } = useContext(AppContext);
+
   return (
     <ScrollView style={tw`w-90 mx-auto mt-5`}>
       <View style={tw`border-b border-base-light pb-5`}>
@@ -63,16 +67,20 @@ export const ViewRestaurant = ({ restaurant, edit, setEdit, act }) => {
           <Text style={tw`text-light text-4xl font-bold`}>
             {restaurant.name}
           </Text>
-          <TouchableOpacity
-            style={tw`p-5 aspect-square items-center justify-center`}
-            onPress={() => setEdit(!edit)}
-          >
-            <MaterialCommunityIcons
-              name="pencil-outline"
-              size={32}
-              color={tw`text-light`["color"]}
-            />
-          </TouchableOpacity>
+          {restaurant.owner_id === user.id ? (
+            <TouchableOpacity
+              style={tw`p-5 aspect-square items-center justify-center`}
+              onPress={() => setEdit(!edit)}
+            >
+              <MaterialCommunityIcons
+                name="pencil-outline"
+                size={32}
+                color={tw`text-light`["color"]}
+              />
+            </TouchableOpacity>
+          ) : (
+            <></>
+          )}
         </View>
         <Image
           source={{

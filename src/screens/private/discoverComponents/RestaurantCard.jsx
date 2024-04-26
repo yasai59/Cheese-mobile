@@ -1,9 +1,8 @@
 import axios from "axios";
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { View, Image, TouchableOpacity, Text } from "react-native";
 import tw from "../../../../twrnc";
 import { LinearGradient } from "expo-linear-gradient";
-import { Entypo } from "@expo/vector-icons";
 import { DraxProvider, DraxView } from "react-native-drax";
 import Animated, {
   Easing,
@@ -54,7 +53,7 @@ export const RestaurantCard = ({ restaurant, goNext }) => {
   const svOpacity = useSharedValue(1);
   const svScale = useSharedValue(100);
 
-  const totalImages = restaurant.carousel.length;
+  const totalImages = restaurant.carousel_photos?.length || 0;
 
   const [activePhoto, setActivePhoto] = useState(0);
 
@@ -152,7 +151,7 @@ export const RestaurantCard = ({ restaurant, goNext }) => {
           />
         </View>
         <View style={tw`flex flex-row absolute mt-5 w-full gap-2 px-2 z-10`}>
-          {restaurant.carousel.map((photo, index) => (
+          {restaurant.carousel_photos.map((photo, index) => (
             <View
               key={index}
               style={tw`border-2 border-light flex-grow h-2 rounded-full ${
@@ -170,7 +169,7 @@ export const RestaurantCard = ({ restaurant, goNext }) => {
 
         <Image
           source={{
-            uri: `${axios.defaults.baseURL}/api/restaurant/carousel/photo/${restaurant.carousel[activePhoto]}`,
+            uri: `${axios.defaults.baseURL}/api/restaurant/carousel/photo/${restaurant.carousel_photos[activePhoto]}`,
           }}
           style={{ width: "100%", height: "100%" }}
         />
