@@ -44,7 +44,6 @@ export const AddDish = ({ addDishModal, setAddDishModal, restaurantId }) => {
       return;
     }
 
-    // TODO: send data to the server
     if (!restaurantId)
       return alert("Internal error, please restart the app and try again");
 

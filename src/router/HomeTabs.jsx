@@ -12,6 +12,7 @@ import { Discover } from "../screens/private/Discover";
 import { Restaurant } from "../screens/private/restaurants/Restaurant";
 import { LikedRestaurantsScreen } from "../screens/private/LikedRestaurantsScreen";
 import { FavoriteRestaurantScreen } from "../screens/private/FavoriteRestaurantScreen";
+import { DishScreen } from "../screens/private/DishScreen";
 
 const Tab = createBottomTabNavigator();
 
@@ -133,6 +134,11 @@ export const HomeTabs = ({ navigation }) => {
       <Tab.Screen
         name="Restaurant"
         component={Restaurant}
+        options={{ headerShown: false }}
+      />
+      <Tab.Screen
+        name="Dish"
+        component={DishScreen}
         options={{ headerShown: false }}
       />
     </Tab.Navigator>

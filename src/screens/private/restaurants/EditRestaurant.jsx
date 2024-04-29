@@ -165,7 +165,7 @@ export const EditRestaurant = ({
             onChange={(value) => {
               setTempRes({ ...tempRes, address: value });
             }}
-            className={"text-light text-base font-thin"}
+            className={"text-light text-base font-light"}
           />
           {/* teléfono */}
           <InvisibleInput
@@ -173,7 +173,7 @@ export const EditRestaurant = ({
             onChange={(value) => {
               setTempRes({ ...tempRes, phone: value });
             }}
-            className={"text-light text-base font-thin"}
+            className={"text-light text-base font-light"}
             type={"tel"}
           />
         </View>
@@ -192,10 +192,10 @@ export const EditRestaurant = ({
           {restaurant.dishes?.map((dish) => {
             return (
               <View key={dish.id} style={tw`border-b border-base-light py-2`}>
-                <TouchableOpacity style={tw`flex-row`}>
+                <TouchableOpacity style={tw`flex-row gap-5 `}>
                   <Image
                     source={{
-                      uri: `${axios.defaults.baseURL}/dish/photo/${dish.photo}`,
+                      uri: `${axios.defaults.baseURL}/api/dish/photo/${dish.photo}`,
                     }}
                     style={tw`w-24 h-24 rounded-lg`}
                   />
@@ -203,7 +203,7 @@ export const EditRestaurant = ({
                     <Text style={tw`text-light font-bold text-2xl`}>
                       {dish.name}
                     </Text>
-                    <Text style={tw`text-light `}>{dish.description}</Text>
+                    <Text style={tw`text-light `}>{dish.price}€</Text>
                   </View>
                 </TouchableOpacity>
               </View>

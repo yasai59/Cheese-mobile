@@ -61,7 +61,7 @@ export const LikedRestaurantsScreen = () => {
 
   return (
     <ScrollView style={tw`flex-1 bg-base-dark p-3`}>
-      <Text style={tw`text-light text-5xl font-bold`}>Liked history</Text>
+      <Text style={tw`text-light text-4xl font-bold`}>Liked history</Text>
       <Text style={tw`text-light text-lg font-light`}>
         Here are your last 20 likes
       </Text>

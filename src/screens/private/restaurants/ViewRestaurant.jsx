@@ -15,6 +15,7 @@ import {
 } from "@expo/vector-icons";
 import { useContext } from "react";
 import { AppContext } from "../../../context/AppContext";
+import { useNavigation } from "@react-navigation/native";
 
 const handleOrderPress = (link) => {
   Linking.openURL(link);
@@ -63,6 +64,8 @@ const UberEatsBtn = ({ link }) => {
 
 export const ViewRestaurant = ({ restaurant, edit, setEdit, act }) => {
   const { user, favoriteRestaurants, toggleFavorite } = useContext(AppContext);
+
+  const navigation = useNavigation();
 
   return (
     <ScrollView style={tw`w-90 mx-auto mt-5`}>
@@ -120,10 +123,17 @@ export const ViewRestaurant = ({ restaurant, edit, setEdit, act }) => {
         {restaurant.dishes?.map((dish) => {
           return (
             <View key={dish.id} style={tw`border-b border-base-light py-2`}>
-              <TouchableOpacity style={tw`flex-row`}>
+              <TouchableOpacity
+                style={tw`flex-row gap-5`}
+                onPress={() => {
+                  navigation.navigate("Dish", {
+                    dish: { ...dish, restaurant: restaurant.id },
+                  });
+                }}
+              >
                 <Image
                   source={{
-                    uri: `${axios.defaults.baseURL}/dish/photo/${dish.photo}`,
+                    uri: `${axios.defaults.baseURL}/api/dish/photo/${dish.photo}`,
                   }}
                   style={tw`w-24 h-24 rounded-lg`}
                 />
@@ -131,7 +141,7 @@ export const ViewRestaurant = ({ restaurant, edit, setEdit, act }) => {
                   <Text style={tw`text-light font-bold text-2xl`}>
                     {dish.name}
                   </Text>
-                  <Text style={tw`text-light `}>{dish.description}</Text>
+                  <Text style={tw`text-light `}>{dish.price}€</Text>
                 </View>
               </TouchableOpacity>
             </View>

@@ -23,7 +23,15 @@ export const AppProvider = ({ children }) => {
 
   const updateRestaurants = () => {
     axios.get("/api/restaurant").then((res) => {
-      setRestaurants(res.data);
+      const arr = [];
+
+      res.data.forEach((r) => {
+        if (arr.find((a) => a.id === r.id)) return;
+
+        arr.push(r);
+      });
+
+      setRestaurants(arr);
     });
   };
 

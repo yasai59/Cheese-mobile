@@ -57,8 +57,8 @@ export const FavoriteRestaurantScreen = () => {
   };
 
   return (
-    <ScrollView style={tw`flex-1 bg-base-dark p-3`}>
-      <Text style={tw`text-light text-5xl font-bold`}>
+    <ScrollView style={tw`flex-1 bg-base-dark p-3 `}>
+      <Text style={tw`text-light text-4xl font-bold`}>
         Favorite Restaurants
       </Text>
       <Text style={tw`text-light font-bold mt-3 mb-2`}>Search</Text>
@@ -68,7 +68,7 @@ export const FavoriteRestaurantScreen = () => {
         value={search}
         onChange={(text) => setSearch(text)}
       />
-      <View style={tw`flex-1 mt-5 gap-2 flex-row`}>
+      <View style={tw`mt-5 gap-2 flex-row flex-wrap`}>
         {favoriteRestaurants
           .filter((res) => {
             return (

@@ -53,25 +53,23 @@ export const Restaurant = ({ route, navigation }) => {
     owner_id: 0,
   });
 
-  useEffect(() => {
-    BackHandler.addEventListener("hardwareBackPress", () => {
-      if (edit) {
-        confirm(
-          "Are you sure you want to exit without saving changes?",
-          "You will lose all changes made to the restaurant",
-          () => {
-            setEdit(false);
-            navigation.navigate("YourRestaurants");
-          },
-          () => {}
-        );
-        return true;
-      }
-
-      navigation.navigate(lastTab);
+  BackHandler.addEventListener("hardwareBackPress", () => {
+    if (edit) {
+      confirm(
+        "Are you sure you want to exit without saving changes?",
+        "You will lose all changes made to the restaurant",
+        () => {
+          setEdit(false);
+          navigation.navigate("YourRestaurants");
+        },
+        () => {}
+      );
       return true;
-    });
-  }, [restaurant, edit]);
+    }
+
+    navigation.navigate(lastTab);
+    return true;
+  });
 
   useEffect(() => {
     getRestaurant(id).then(() => setLoading(false));
