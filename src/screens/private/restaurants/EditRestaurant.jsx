@@ -10,6 +10,7 @@ import { InvisibleInput } from "../../../components";
 import { InputImage } from "../../../components/InputImage";
 import { AddRestaurantCarousel } from "../../../components/AddRestaurantCarousel";
 import { AddDish } from "./AddDish";
+import { EditDish } from "./EditDish";
 
 export const EditRestaurant = ({
   restaurant,
@@ -22,6 +23,8 @@ export const EditRestaurant = ({
   const [addDishModal, setAddDishModal] = useState(false);
   const [tempRes, setTempRes] = useState(restaurant);
   const [changes, setChanges] = useState(false);
+  const [selectedDish, setSelectedDish] = useState(null);
+  const [editDish, setEditDish] = useState(false);
 
   const [carousel, setCarousel] = useState([]);
   useEffect(() => {
@@ -123,6 +126,11 @@ export const EditRestaurant = ({
     }
   };
 
+  const handleClickDish = (dish) => {
+    setSelectedDish(dish);
+    setEditDish(true);
+  };
+
   return (
     <>
       <ScrollView style={tw`w-90 mx-auto mt-5 flex-1`}>
@@ -192,7 +200,10 @@ export const EditRestaurant = ({
           {restaurant.dishes?.map((dish) => {
             return (
               <View key={dish.id} style={tw`border-b border-base-light py-2`}>
-                <TouchableOpacity style={tw`flex-row gap-5 `}>
+                <TouchableOpacity
+                  style={tw`flex-row gap-5`}
+                  onPress={() => handleClickDish(dish)}
+                >
                   <Image
                     source={{
                       uri: `${axios.defaults.baseURL}/api/dish/photo/${dish.photo}`,
@@ -252,6 +263,7 @@ export const EditRestaurant = ({
           setAddDishModal={setAddDishModal}
           restaurantId={restaurant.id}
         />
+        <EditDish dish={selectedDish} open={editDish} setOpen={setEditDish} />
       </ScrollView>
     </>
   );
