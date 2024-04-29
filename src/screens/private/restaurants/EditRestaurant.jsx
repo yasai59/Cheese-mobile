@@ -23,8 +23,6 @@ export const EditRestaurant = ({
   const [tempRes, setTempRes] = useState(restaurant);
   const [changes, setChanges] = useState(false);
 
-  console.log(restaurant);
-
   const [carousel, setCarousel] = useState([]);
   useEffect(() => {
     axios
@@ -97,7 +95,6 @@ export const EditRestaurant = ({
   };
 
   const updateImages = async (images) => {
-    console.log(images);
     const data = new FormData();
     for (let image of images) {
       if (!image.uri.includes("http")) {
@@ -121,8 +118,6 @@ export const EditRestaurant = ({
           },
         }
       );
-
-      console.log(res.data);
     } catch (e) {
       console.log(e);
     }

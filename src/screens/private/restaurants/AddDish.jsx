@@ -69,13 +69,10 @@ export const AddDish = ({ addDishModal, setAddDishModal, restaurantId }) => {
         },
       });
 
-      console.log(res.data);
       setAddDishModal(false);
     } catch (e) {
       console.log(e);
     }
-
-    console.log("submit");
   };
 
   return (

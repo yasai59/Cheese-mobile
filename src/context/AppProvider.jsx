@@ -11,6 +11,8 @@ export const AppProvider = ({ children }) => {
   const [tastes, setTastes] = useState([]);
   const [restrictions, setRestrictions] = useState([]);
   const [restaurants, setRestaurants] = useState([]);
+  const [favoriteRestaurants, setFavoriteRestaurants] = useState([]);
+  const [lastTab, setLastTab] = useState("Home");
 
   const [allTastes, setAllTastes] = useState([]);
   const [allRestrictions, setAllRestrictions] = useState([]);
@@ -26,6 +28,10 @@ export const AppProvider = ({ children }) => {
   };
 
   const addRestaurant = (restaurant) => {
+    // look for the restaurant in the list
+    const res = restaurants.find((r) => r.id === restaurant.id);
+    if (res) return;
+
     setRestaurants((prev) => [...prev, restaurant]);
   };
 
@@ -53,6 +59,9 @@ export const AppProvider = ({ children }) => {
     });
     axios.get("/api/restriction/all").then((res) => {
       setAllRestrictions(res.data.restrictions);
+    });
+    axios.get("/api/restaurant/favorite-restaurants").then((res) => {
+      setFavoriteRestaurants(res.data);
     });
   }, [token]);
 
@@ -123,6 +132,29 @@ export const AppProvider = ({ children }) => {
     setRestrictions(newRestrictions);
   };
 
+  const toggleFavorite = (restaurant) => {
+    const res = favoriteRestaurants.find((r) => r.id === restaurant.id);
+    if (res) {
+      setFavoriteRestaurants((prev) =>
+        prev.filter((r) => r.id !== restaurant.id)
+      );
+      axios
+        .post("/api/restaurant/favorite-restaurant/" + restaurant.id)
+        .catch(() => {
+          setFavoriteRestaurants((prev) => [...prev, restaurant]);
+        });
+    } else {
+      setFavoriteRestaurants((prev) => [...prev, restaurant]);
+      axios
+        .post("/api/restaurant/favorite-restaurant/" + restaurant.id)
+        .catch(() => {
+          setFavoriteRestaurants((prev) =>
+            prev.filter((r) => r.id !== restaurant.id)
+          );
+        });
+    }
+  };
+
   return (
     <AppContext.Provider
       value={{
@@ -144,6 +176,10 @@ export const AppProvider = ({ children }) => {
         updateRestaurants,
         allTastes,
         allRestrictions,
+        favoriteRestaurants,
+        toggleFavorite,
+        lastTab,
+        setLastTab,
       }}
     >
       {children}

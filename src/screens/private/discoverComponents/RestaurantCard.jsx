@@ -78,8 +78,6 @@ export const RestaurantCard = ({ restaurant, goNext }) => {
   };
 
   const handleGoNext = (like) => {
-    console.log("like", like);
-
     if (like) {
       svMove.value = withSpring(600);
       svRotate.value = withSpring(60);
@@ -106,7 +104,6 @@ export const RestaurantCard = ({ restaurant, goNext }) => {
   };
 
   const handleDragEnd = (event) => {
-    console.log("Drag end");
     if (event.dragTranslation.x > 130) {
       return handleGoNext(true);
     }
@@ -140,7 +137,6 @@ export const RestaurantCard = ({ restaurant, goNext }) => {
           <DraxView
             style={tw`flex-grow`}
             draggable={true}
-            onDragStart={() => console.log("Drag start")}
             payload={restaurant.id}
             onDrag={handleDrag}
             onDragEnd={handleDragEnd}

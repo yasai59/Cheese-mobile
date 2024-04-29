@@ -8,7 +8,11 @@ import {
 } from "react-native";
 import tw from "../../../../twrnc";
 import axios from "axios";
-import { MaterialCommunityIcons } from "@expo/vector-icons";
+import {
+  MaterialCommunityIcons,
+  FontAwesome,
+  MaterialIcons,
+} from "@expo/vector-icons";
 import { useContext } from "react";
 import { AppContext } from "../../../context/AppContext";
 
@@ -58,7 +62,7 @@ const UberEatsBtn = ({ link }) => {
 };
 
 export const ViewRestaurant = ({ restaurant, edit, setEdit, act }) => {
-  const { user } = useContext(AppContext);
+  const { user, favoriteRestaurants, toggleFavorite } = useContext(AppContext);
 
   return (
     <ScrollView style={tw`w-90 mx-auto mt-5`}>
@@ -79,7 +83,22 @@ export const ViewRestaurant = ({ restaurant, edit, setEdit, act }) => {
               />
             </TouchableOpacity>
           ) : (
-            <></>
+            <View style={tw`flex-row gap-5`}>
+              <TouchableOpacity onPress={() => toggleFavorite(restaurant)}>
+                {favoriteRestaurants.find((r) => r.id === restaurant.id) ? (
+                  <FontAwesome name="star" size={32} style={tw`text-primary`} />
+                ) : (
+                  <FontAwesome name="star-o" size={32} style={tw`text-light`} />
+                )}
+              </TouchableOpacity>
+              <TouchableOpacity>
+                <MaterialIcons
+                  name="report-gmailerrorred"
+                  size={34}
+                  style={tw`text-secondary`}
+                />
+              </TouchableOpacity>
+            </View>
           )}
         </View>
         <Image
@@ -89,11 +108,11 @@ export const ViewRestaurant = ({ restaurant, edit, setEdit, act }) => {
           style={tw`h-36 w-36 rounded-full mx-auto my-5`}
         />
         {/* dirección */}
-        <Text style={tw`text-light text-base font-thin`}>
+        <Text style={tw`text-light text-base font-light`}>
           {restaurant.address}
         </Text>
         {/* teléfono */}
-        <Text style={tw`text-light text-base font-thin`}>
+        <Text style={tw`text-light text-base font-light`}>
           {restaurant.phone}
         </Text>
       </View>

@@ -1,4 +1,4 @@
-import React, { useContext } from "react";
+import React, { useContext, useEffect } from "react";
 import { Image, ScrollView, Text, View } from "react-native";
 import tw from "../../../twrnc";
 import { StatusBar } from "expo-status-bar";

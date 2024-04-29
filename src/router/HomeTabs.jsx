@@ -10,24 +10,13 @@ import { AppContext } from "../context/AppContext";
 import { YourRestaurantsScreen } from "../screens/private/YourRestaurantsScreen";
 import { Discover } from "../screens/private/Discover";
 import { Restaurant } from "../screens/private/restaurants/Restaurant";
+import { LikedRestaurantsScreen } from "../screens/private/LikedRestaurantsScreen";
+import { FavoriteRestaurantScreen } from "../screens/private/FavoriteRestaurantScreen";
 
 const Tab = createBottomTabNavigator();
 
-const Home = () => {
-  return (
-    <View
-      style={{
-        ...tw`flex-1 bg-base-dark border-t border-base-light`,
-      }}
-    >
-      <Text style={tw`text-light`}>Home</Text>
-      <StatusBar style="light" />
-    </View>
-  );
-};
-
 function MyTabBar({ state, descriptors, navigation }) {
-  const { user } = useContext(AppContext);
+  const { user, setLastTab } = useContext(AppContext);
 
   const icons = {
     Home: "home",
@@ -61,6 +50,7 @@ function MyTabBar({ state, descriptors, navigation }) {
 
           if (!isFocused && !event.defaultPrevented) {
             navigation.navigate(route.name, route.params);
+            setLastTab(route.name);
           }
         };
 
@@ -118,7 +108,7 @@ export const HomeTabs = ({ navigation }) => {
       />
       <Tab.Screen
         name="History"
-        component={Home}
+        component={LikedRestaurantsScreen}
         options={{ headerShown: false }}
       />
       {user.role_id === 2 ? (
@@ -132,7 +122,7 @@ export const HomeTabs = ({ navigation }) => {
       )}
       <Tab.Screen
         name="Favorites"
-        component={Home}
+        component={FavoriteRestaurantScreen}
         options={{ headerShown: false }}
       />
       <Tab.Screen

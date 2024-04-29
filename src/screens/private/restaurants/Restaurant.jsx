@@ -6,6 +6,7 @@ import axios from "axios";
 import { AppContext } from "../../../context/AppContext";
 import { ViewRestaurant } from "./ViewRestaurant";
 import { EditRestaurant } from "./EditRestaurant";
+import { useNavigation } from "@react-navigation/native";
 
 export const Restaurant = ({ route, navigation }) => {
   const confirm = (title, body, onAccept, onCancel) => {
@@ -18,7 +19,7 @@ export const Restaurant = ({ route, navigation }) => {
       { text: "Yes", onPress: onAccept },
     ]);
   };
-  const { restaurants, user } = useContext(AppContext);
+  const { restaurants, user, lastTab } = useContext(AppContext);
   const [edit, setEdit] = useState(false);
 
   async function getRestaurant(id) {
@@ -67,12 +68,10 @@ export const Restaurant = ({ route, navigation }) => {
         return true;
       }
 
-      if (restaurant.owner_id === user.id)
-        navigation.navigate("YourRestaurants");
-      else navigation.goBack();
+      navigation.navigate(lastTab);
       return true;
     });
-  }, [id, edit]);
+  }, [restaurant, edit]);
 
   useEffect(() => {
     getRestaurant(id).then(() => setLoading(false));

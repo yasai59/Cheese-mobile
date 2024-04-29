@@ -2,10 +2,11 @@ import { StatusBar } from "expo-status-bar";
 import { Text, View } from "react-native";
 import tw from "../../../twrnc";
 import { RestaurantCard } from "./discoverComponents/RestaurantCard";
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { Loading } from "../../components/Loading";
 import axios from "axios";
 import { LikedRestaurants } from "./LikedRestaurants";
+import { AppContext } from "../../context/AppContext";
 
 export const Discover = () => {
   const [restaurants, setRestaurants] = useState([]);
