@@ -11,16 +11,23 @@ export const PillSelect = ({
   title = "No title",
   items = [],
   setSelectedItemsDef = () => {},
+  initialSelected = [],
 }) => {
   const [open, setOpen] = React.useState(false);
 
   const [selected, setSelected] = React.useState([]);
+
   const [confirmed, setConfirmed] = React.useState([]);
+
+  useEffect(() => {
+    setConfirmed(initialSelected || []);
+    setSelected(initialSelected || []);
+  }, []);
 
   const handleClickPill = (index) => {
     setSelected((prev) => {
-      if (prev.includes(index)) {
-        return prev.filter((i) => i !== index);
+      if (!!prev.find((i) => i.id === index.id)) {
+        return prev.filter((i) => i.id !== index.id);
       }
       return [...prev, index];
     });
@@ -48,7 +55,7 @@ export const PillSelect = ({
         style={tw`bg-base rounded-lg h-13 relative z-50 flex-row  items-center p-2 gap-2 overflow-hidden`}
         onPress={handleOpen}
       >
-        {confirmed.map((item, i) => (
+        {confirmed?.map((item, i) => (
           <Pill key={i} text={item.name} className={"text-sm"} active={true} />
         ))}
       </TouchableOpacity>
@@ -64,7 +71,7 @@ export const PillSelect = ({
                 key={i}
                 text={item.name}
                 className={"text-sm"}
-                active={selected.includes(item)}
+                active={!!selected.find((i) => i.id === item.id)}
                 onPress={() => handleClickPill(item)}
               />
             ))}

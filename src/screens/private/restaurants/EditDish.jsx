@@ -3,6 +3,7 @@ import { Alert, Text, TouchableOpacity, View } from "react-native";
 import tw from "../../../../twrnc";
 import Modal from "react-native-modal";
 import { Entypo } from "@expo/vector-icons";
+import mime from "mime";
 
 import { useState } from "react";
 import { AddRestaurantPhoto, Input } from "../../../components";
@@ -14,24 +15,34 @@ import { resizeImage } from "../../../helpers/resizeImage";
 export const EditDish = ({ open, setOpen, dish }) => {
   if (!dish) return <></>;
 
-  const [dishImage, setDishImage] = useState(dish.photo);
+  const [dishImage, setDishImage] = useState({
+    uri: `${axios.defaults.baseURL}/api/dish/photo/${dish.photo}`,
+  });
   const { allTastes, allRestrictions, updateRestaurants } =
     useContext(AppContext);
 
-  const [selectedTastes, setSelectedTastes] = useState(dish.tastes);
+  const [selectedTastes, setSelectedTastes] = useState(dish.tastes || []);
   const [selectedRestrictions, setSelectedRestrictions] = useState(
-    dish.restrictions
+    dish.restrictions || []
   );
+
+  useEffect(() => {
+    console.log({
+      selectedTastes,
+      selectedRestrictions,
+    });
+  }, [selectedTastes, selectedRestrictions]);
 
   const [name, setName] = useState(dish.name);
   const [description, setDescription] = useState(dish.description);
   const [price, setPrice] = useState(`${dish.price}`);
 
   useEffect(() => {
-    setName(dish.name);
     setDescription(dish.description);
     setPrice(`${dish.price}`);
-    setDishImage(dish.photo);
+    setDishImage({
+      uri: `${axios.defaults.baseURL}/api/dish/photo/${dish.photo}`,
+    });
     setSelectedTastes(dish.tastes);
     setSelectedRestrictions(dish.restrictions);
   }, [dish]);
@@ -63,14 +74,20 @@ export const EditDish = ({ open, setOpen, dish }) => {
     data.append("name", name);
     data.append("description", description);
     data.append("price", price);
+    data.append("id", dish.id);
 
-    const resizedImage = await resizeImage(dishImage.uri);
+    data.append("tastes", JSON.stringify(selectedTastes));
+    data.append("restrictions", JSON.stringify(selectedRestrictions));
 
-    data.append("photo", {
-      name: resizedImage.split("/").pop(),
-      type: "image/png",
-      uri: resizedImage,
-    });
+    if (!dishImage.uri.startsWith("http")) {
+      const resizedImage = await resizeImage(dishImage.uri);
+      const newImageUri = "file:///" + resizedImage.split("file:/").join("");
+      data.append("photo", {
+        name: newImageUri.split("/").pop(),
+        type: mime.getType(newImageUri),
+        uri: newImageUri,
+      });
+    }
 
     try {
       const res = await axios.put(`/api/dish/${dish.id}`, data, {
@@ -80,6 +97,7 @@ export const EditDish = ({ open, setOpen, dish }) => {
       });
 
       setOpen(false);
+      updateRestaurants();
     } catch (e) {
       console.log(e);
     }
@@ -152,18 +170,21 @@ export const EditDish = ({ open, setOpen, dish }) => {
           <AddRestaurantPhoto
             setImageDef={setDishImage}
             className="rounded-lg"
+            initImage={dishImage}
           />
           <Text style={tw`text-light`}>Tastes</Text>
           <PillSelect
             items={allTastes}
             title="Select taste of the dish"
             setSelectedItemsDef={setSelectedTastes}
+            initialSelected={selectedTastes}
           />
           <Text style={tw`text-light`}>Restrictions</Text>
           <PillSelect
             items={allRestrictions}
             title="Select restrictions of the dish"
             setSelectedItemsDef={setSelectedRestrictions}
+            initialSelected={selectedRestrictions}
           />
           <TouchableOpacity
             style={tw`bg-primary p-3 rounded-lg my-5 w-[50%] mx-auto`}

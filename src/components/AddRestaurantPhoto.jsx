@@ -1,11 +1,19 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Image, Text, TouchableOpacity, View } from "react-native";
 import tw from "../../twrnc";
 import { Feather } from "@expo/vector-icons";
 import * as DocumentPicker from "expo-document-picker";
 
-export const AddRestaurantPhoto = ({ setImageDef, className = "" }) => {
-  const [image, setImage] = useState(null);
+export const AddRestaurantPhoto = ({
+  setImageDef,
+  className = "",
+  initImage = null,
+}) => {
+  const [image, setImage] = useState(initImage);
+
+  useEffect(() => {
+    setImage(initImage);
+  }, [initImage]);
 
   const handlePickImage = async () => {
     const result = await DocumentPicker.getDocumentAsync({

@@ -16,8 +16,6 @@ export const DishScreen = ({ route, navigation }) => {
 
   const { tastes, restrictions } = useContext(AppContext);
 
-  console.log(dish);
-
   const handleBack = () => {
     navigation.navigate("Restaurant", { id: dish.restaurant });
   };
