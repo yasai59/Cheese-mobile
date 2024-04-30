@@ -13,7 +13,8 @@ import { resizeImage } from "../../../helpers/resizeImage";
 
 export const AddDish = ({ addDishModal, setAddDishModal, restaurantId }) => {
   const [dishImage, setDishImage] = useState(null);
-  const { allTastes, allRestrictions } = useContext(AppContext);
+  const { allTastes, allRestrictions, updateRestaurants } =
+    useContext(AppContext);
 
   const [selectedTastes, setSelectedTastes] = useState([]);
   const [selectedRestrictions, setSelectedRestrictions] = useState([]);
@@ -53,6 +54,9 @@ export const AddDish = ({ addDishModal, setAddDishModal, restaurantId }) => {
     data.append("description", description);
     data.append("price", price);
 
+    data.append("tastes", JSON.stringify(selectedTastes));
+    data.append("restrictions", JSON.stringify(selectedRestrictions));
+
     const resizedImage = await resizeImage(dishImage.uri);
 
     data.append("photo", {
@@ -69,6 +73,13 @@ export const AddDish = ({ addDishModal, setAddDishModal, restaurantId }) => {
       });
 
       setAddDishModal(false);
+      updateRestaurants();
+      setName("");
+      setDescription("");
+      setPrice("");
+      setDishImage(null);
+      setSelectedTastes([]);
+      setSelectedRestrictions([]);
     } catch (e) {
       console.log(e);
     }

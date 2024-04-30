@@ -14,7 +14,7 @@ import { Pill } from "../../components/Pill";
 export const DishScreen = ({ route, navigation }) => {
   const { dish } = route.params;
 
-  const { tastes } = useContext(AppContext);
+  const { tastes, restrictions } = useContext(AppContext);
 
   console.log(dish);
 
@@ -53,7 +53,7 @@ export const DishScreen = ({ route, navigation }) => {
           {dish.description}
         </Text>
         <Text style={tw`text-light font-bold text-lg`}>Tastes: </Text>
-        <View style={tw`flex-row flex-wrap`}>
+        <View style={tw`flex-row flex-wrap gap-2`}>
           {dish.tastes?.map((taste) => {
             return (
               <Pill
@@ -71,15 +71,14 @@ export const DishScreen = ({ route, navigation }) => {
             ))}
         </View>
         <Text style={tw`text-light font-bold text-lg`}>Restrictions: </Text>
-        <View>
+        <View style={tw`flex-row flex-wrap gap-2`}>
           {dish.restrictions?.map((restriction) => {
             return (
-              <Text
+              <Pill
                 key={restriction.id}
-                style={tw`text-light font-light text-base`}
-              >
-                {restriction.name}
-              </Text>
+                text={restriction.name}
+                active={restrictions.includes(restriction.id)}
+              />
             );
           })}
           {dish.restrictions?.length === 0 && (

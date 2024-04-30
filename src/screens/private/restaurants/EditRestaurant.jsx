@@ -62,10 +62,8 @@ export const EditRestaurant = ({
         uri: resizedImage,
       });
 
-      data.append("id", restaurant.id);
-
       const res = await axios.post(
-        "/api/restaurant/photo/profile-picture",
+        "/api/restaurant/photo/profile-picture/" + restaurant.id,
         data,
         {
           headers: {

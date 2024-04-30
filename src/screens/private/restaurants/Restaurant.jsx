@@ -76,6 +76,10 @@ export const Restaurant = ({ route, navigation }) => {
     setEdit(false);
   }, [id]);
 
+  useEffect(() => {
+    getRestaurant(id).then(() => setLoading(false));
+  }, [restaurants]);
+
   const [act, setAct] = useState(Date.now());
 
   return (

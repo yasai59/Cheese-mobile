@@ -3,16 +3,16 @@ import React from "react";
 import { Text, TouchableOpacity, View } from "react-native";
 import tw from "../../twrnc";
 
-const Wrapper = ({ children, onPress, style = "" }) => {
+const Wrapper = ({ children, onPress, className = "" }) => {
   if (onPress) {
     return (
-      <TouchableOpacity onPress={onPress} style={style}>
+      <TouchableOpacity onPress={onPress} style={tw`${className}`}>
         {children}
       </TouchableOpacity>
     );
   }
 
-  return <View>{children}</View>;
+  return <View style={tw`${className}`}>{children}</View>;
 };
 
 export const Pill = ({ active = false, onPress, text = "", className }) => {
@@ -35,7 +35,7 @@ export const Pill = ({ active = false, onPress, text = "", className }) => {
 
   return (
     <Wrapper
-      style={{ ...tw`bg-base-light p-2 rounded-full px-3 ` }}
+      className={`bg-base-light p-2 rounded-full px-3`}
       onPress={onPress}
     >
       <Text style={tw`text-light text-base ${className}`}>{text}</Text>

@@ -1,5 +1,5 @@
 import React, { useContext, useEffect } from "react";
-import { Text, TouchableOpacity, View } from "react-native";
+import { Alert, Text, TouchableOpacity, View } from "react-native";
 import tw from "../../../../twrnc";
 import Modal from "react-native-modal";
 import { Entypo } from "@expo/vector-icons";
@@ -15,9 +15,8 @@ export const EditDish = ({ open, setOpen, dish }) => {
   if (!dish) return <></>;
 
   const [dishImage, setDishImage] = useState(dish.photo);
-  const { allTastes, allRestrictions } = useContext(AppContext);
-
-  console.log(dish.tastes);
+  const { allTastes, allRestrictions, updateRestaurants } =
+    useContext(AppContext);
 
   const [selectedTastes, setSelectedTastes] = useState(dish.tastes);
   const [selectedRestrictions, setSelectedRestrictions] = useState(
@@ -86,6 +85,26 @@ export const EditDish = ({ open, setOpen, dish }) => {
     }
   };
 
+  const handleDeleteDish = () => {
+    Alert.alert("Are you sure", "Do you want to delete this dish?", [
+      {
+        text: "Cancel",
+        onPress: () => null,
+        style: "cancel",
+      },
+      {
+        text: "YES",
+        onPress: () => {
+          axios.delete(`/api/dish/${dish.id}`).then((res) => {
+            console.log(res);
+            setOpen(false);
+            updateRestaurants();
+          });
+        },
+      },
+    ]);
+  };
+
   return (
     <Modal isVisible={open} onBackButtonPress={() => setOpen(false)}>
       <View style={tw`bg-base-dark rounded-lg border-2 border-base relative`}>
@@ -99,6 +118,12 @@ export const EditDish = ({ open, setOpen, dish }) => {
           <Entypo name="cross" size={32} color={tw`text-light`["color"]} />
         </TouchableOpacity>
         <View style={tw`w-[80%] mx-auto gap-2`}>
+          <TouchableOpacity
+            style={tw`bg-red-600 rounded-lg p-3 items-center`}
+            onPress={handleDeleteDish}
+          >
+            <Text style={tw`font-bold`}>Delete dish</Text>
+          </TouchableOpacity>
           <Text style={tw`text-light`}>Name</Text>
           <Input
             placeholder="Name"
