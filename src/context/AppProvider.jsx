@@ -13,6 +13,7 @@ export const AppProvider = ({ children }) => {
   const [restaurants, setRestaurants] = useState([]);
   const [favoriteRestaurants, setFavoriteRestaurants] = useState([]);
   const [lastTab, setLastTab] = useState("Home");
+  const [reasons, setReasons] = useState([]);
 
   const [allTastes, setAllTastes] = useState([]);
   const [allRestrictions, setAllRestrictions] = useState([]);
@@ -70,6 +71,9 @@ export const AppProvider = ({ children }) => {
     });
     axios.get("/api/restaurant/favorite-restaurants").then((res) => {
       setFavoriteRestaurants(res.data);
+    });
+    axios.get("/api/reason/getAll").then((res) => {
+      setReasons(res.data.reasons);
     });
   }, [token]);
 
@@ -188,6 +192,7 @@ export const AppProvider = ({ children }) => {
         toggleFavorite,
         lastTab,
         setLastTab,
+        reasons,
       }}
     >
       {children}
