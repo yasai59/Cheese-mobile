@@ -3,18 +3,16 @@ import { SafeAreaProvider } from "react-native-safe-area-context";
 import { useCallback } from "react";
 import { AppProvider } from "./src/context/AppProvider";
 import { AppRouter } from "./src/router/AppRouter";
-import { View } from "react-native";
 import tw from "./twrnc";
 import { useFonts } from "expo-font";
 import * as SplashScreen from "expo-splash-screen";
 import { NavigationContainer } from "@react-navigation/native";
-import { DraxProvider } from "react-native-drax";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
 
 // SplashScreen.preventAutoHideAsync();
 
 export default function App() {
-  axios.defaults.baseURL = "http://192.168.209.83:3000";
+  axios.defaults.baseURL = "https://apicheese.yasai59.com";
 
   const [fontsLoaded, fontError] = useFonts({
     Anton: require("./assets/fonts/Anton.ttf"),

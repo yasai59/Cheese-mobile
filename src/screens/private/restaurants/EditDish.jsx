@@ -26,13 +26,6 @@ export const EditDish = ({ open, setOpen, dish }) => {
     dish.restrictions || []
   );
 
-  useEffect(() => {
-    console.log({
-      selectedTastes,
-      selectedRestrictions,
-    });
-  }, [selectedTastes, selectedRestrictions]);
-
   const [name, setName] = useState(dish.name);
   const [description, setDescription] = useState(dish.description);
   const [price, setPrice] = useState(`${dish.price}`);
@@ -114,7 +107,6 @@ export const EditDish = ({ open, setOpen, dish }) => {
         text: "YES",
         onPress: () => {
           axios.delete(`/api/dish/${dish.id}`).then((res) => {
-            console.log(res);
             setOpen(false);
             updateRestaurants();
           });

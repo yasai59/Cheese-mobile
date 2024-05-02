@@ -75,6 +75,11 @@ export const ViewRestaurant = ({ restaurant, edit, setEdit, act }) => {
   const [description, setDescription] = useState("");
 
   const handleReport = () => {
+    if (selectedReasons.length === 0) {
+      alert("Please select at least 1 reason");
+      return;
+    }
+
     axios
       .post("/api/report/" + restaurant.id, {
         reasonIds: selectedReasons.map((r) => r.id),
