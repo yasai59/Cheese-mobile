@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import { Text, View } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import tw from "../../twrnc";
@@ -6,11 +6,15 @@ import { Input } from "../components/Input";
 import { FormBtn } from "../components/FormBtn";
 import { Checkbox } from "../components/Checkbox";
 import axios from "axios";
+import { AppContext } from "../context/AppContext";
 export const SignUpScreen = ({ navigation }) => {
   const inset = useSafeAreaInsets();
   const handleBack = () => {
     navigation.goBack();
   };
+
+  const { loginToken } = useContext(AppContext);
+
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [username, setUsername] = useState("");
@@ -34,20 +38,21 @@ export const SignUpScreen = ({ navigation }) => {
 
     axios
       .post("/api/user", {
-        user: {
-          username,
-          email,
-          password,
-          role_id: restaurant ? 2 : 1,
-        },
+        username,
+        email,
+        password,
+        role_id: restaurant ? 2 : 1,
       })
       .then((res) => {
         alert("User created successfully");
-        navigation.goBack();
+        loginToken(res.data.token, res.data.user);
+        navigation.navigate("Home");
       })
       .catch((err) => {
+        console.log(err.response.data);
+
         if (err.response.status === 400) {
-          alert(err.response.errors[0].msg);
+          alert(err.response.data.errors[0].msg);
         } else {
           alert("An error occurred");
         }

@@ -17,7 +17,10 @@ const Restaurant = ({
   onPress,
 }) => {
   return (
-    <TouchableOpacity style={tw`bg-base w-47 rounded-lg p-5`} onPress={onPress}>
+    <TouchableOpacity
+      style={tw`bg-base aspect-square rounded-lg p-5`}
+      onPress={onPress}
+    >
       <TouchableOpacity style={tw`self-end`} onPress={onFavorite}>
         {isFavourite ? (
           <FontAwesome name="star" size={24} style={tw`text-primary`} />
@@ -68,7 +71,7 @@ export const FavoriteRestaurantScreen = () => {
         value={search}
         onChange={(text) => setSearch(text)}
       />
-      <View style={tw`mt-5 gap-2 flex-row flex-wrap`}>
+      <View style={tw`mt-5 gap-2 flex-row flex-wrap justify-center`}>
         {favoriteRestaurants
           .filter((res) => {
             return (

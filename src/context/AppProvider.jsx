@@ -84,8 +84,8 @@ export const AppProvider = ({ children }) => {
     try {
       const res = await axios.post("/api/user/login", { username, password });
       setUser(res.data.user);
-      setToken(res.data.token);
       axios.defaults.headers.common["x-token"] = `${res.data.token}`;
+      setToken(res.data.token);
       storeData("token", res.data.token);
       storeData("user", JSON.stringify(res.data.user));
     } catch (e) {
@@ -95,6 +95,7 @@ export const AppProvider = ({ children }) => {
 
   const loginToken = async (token, user) => {
     if (!token) return;
+    axios.defaults.headers.common["x-token"] = `${token}`;
     setUser(user);
     storeData("token", token);
     setToken(token);

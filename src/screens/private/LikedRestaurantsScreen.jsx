@@ -16,7 +16,10 @@ const Restaurant = ({
   onPress,
 }) => {
   return (
-    <TouchableOpacity style={tw`bg-base w-47 rounded-lg p-5`} onPress={onPress}>
+    <TouchableOpacity
+      style={tw`bg-base rounded-lg p-5 aspect-square`}
+      onPress={onPress}
+    >
       <TouchableOpacity style={tw`self-end`} onPress={onFavorite}>
         {isFavourite ? (
           <FontAwesome name="star" size={24} style={tw`text-primary`} />
@@ -65,7 +68,7 @@ export const LikedRestaurantsScreen = () => {
       <Text style={tw`text-light text-lg font-light`}>
         Here are your last 20 likes
       </Text>
-      <View style={tw`flex-row flex-wrap gap-2 mt-8`}>
+      <View style={tw`flex-row flex-wrap gap-2 mt-8 justify-center`}>
         {likedRestaurants.slice(0, 20).map((restaurant) => (
           <Restaurant
             key={restaurant.id}

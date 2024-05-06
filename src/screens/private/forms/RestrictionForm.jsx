@@ -54,8 +54,11 @@ export const RestrictionForm = () => {
         <Text style={tw`text-light font-bold text-4xl mt-10`}>
           Are you vegan or have an allergy?
         </Text>
-        <View style={tw`flex flex-row justify-between gap-2 mt-2`}>
-          <TouchableOpacity onPress={() => setDiet(3)}>
+        <View style={tw`flex flex-row justify-between gap-2 mt-2 w-[90%]`}>
+          <TouchableOpacity
+            onPress={() => setDiet(3)}
+            style={tw`flex-grow aspect-square`}
+          >
             {diet === 3 ? (
               <LinearGradient
                 colors={[
@@ -64,49 +67,55 @@ export const RestrictionForm = () => {
                 ]}
                 start={{ x: 0, y: 0 }}
                 end={{ x: 0.7, y: 0.7 }}
-                style={tw`bg-base w-30 h-30 items-center justify-center rounded-xl`}
+                style={tw`bg-base h-full items-center justify-center rounded-xl`}
               >
-                <Text style={tw`text-light font-bold`}>Normal</Text>
+                <Text style={tw`text-light font-bold`}>Omnivore</Text>
               </LinearGradient>
             ) : (
               <View
-                style={tw`bg-base w-30 h-30 items-center justify-center rounded-xl`}
+                style={tw`bg-base h-full items-center justify-center rounded-xl`}
               >
-                <Text style={tw`text-light`}>Normal</Text>
+                <Text style={tw`text-light`}>Omnivore</Text>
               </View>
             )}
           </TouchableOpacity>
-          <TouchableOpacity onPress={() => setDiet(2)}>
+          <TouchableOpacity
+            onPress={() => setDiet(2)}
+            style={tw`flex-grow aspect-square`}
+          >
             {diet === 2 ? (
               <LinearGradient
                 colors={[tw`text-primary`["color"], "#1A936F"]}
                 start={{ x: 0, y: 0 }}
                 end={{ x: 0.7, y: 0.7 }}
-                style={tw`bg-base w-30 h-30 items-center justify-center rounded-xl`}
+                style={tw`bg-base h-full items-center justify-center rounded-xl`}
               >
                 <Text style={tw`text-light font-bold`}>Vegetarian</Text>
               </LinearGradient>
             ) : (
               <View
-                style={tw`bg-base w-30 h-30 items-center justify-center rounded-xl`}
+                style={tw`bg-base h-full items-center justify-center rounded-xl`}
               >
                 <Text style={tw`text-light`}>Vegetarian</Text>
               </View>
             )}
           </TouchableOpacity>
-          <TouchableOpacity onPress={() => setDiet(1)}>
+          <TouchableOpacity
+            onPress={() => setDiet(1)}
+            style={tw`flex-grow aspect-square`}
+          >
             {diet === 1 ? (
               <LinearGradient
                 colors={[tw`text-primary`["color"], "#1A936F"]}
                 start={{ x: 0, y: 0 }}
                 end={{ x: 0.5, y: 0.7 }}
-                style={tw`bg-base w-30 h-30 items-center justify-center rounded-xl`}
+                style={tw`bg-base h-full items-center justify-center rounded-xl`}
               >
                 <Text style={tw`text-light font-bold`}>Vegan</Text>
               </LinearGradient>
             ) : (
               <View
-                style={tw`bg-base w-30 h-30 items-center justify-center rounded-xl`}
+                style={tw`bg-base h-full items-center justify-center rounded-xl`}
               >
                 <Text style={tw`text-light`}>Vegan</Text>
               </View>
