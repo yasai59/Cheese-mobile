@@ -11,7 +11,7 @@ import axios from "axios";
 import { Loading } from "../components/Loading";
 
 export const LoginScreen = ({ navigation }) => {
-  const { login, loginToken } = useContext(AppContext);
+  const { login, loginToken, logout } = useContext(AppContext);
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
@@ -57,7 +57,12 @@ export const LoginScreen = ({ navigation }) => {
           setIsLoading(false);
         })
         .catch((e) => {
-          console.log(e);
+          if (e.response.status === 400) {
+            alert(
+              "This user is deactivated. Please contact the administrator."
+            );
+          }
+          logout();
           setIsLoading(false);
         });
     } catch (error) {
