@@ -89,6 +89,7 @@ export const FavoriteRestaurantScreen = () => {
             />
           ))}
       </View>
+      <View style={tw`h-10`}></View>
     </ScrollView>
   );
 };

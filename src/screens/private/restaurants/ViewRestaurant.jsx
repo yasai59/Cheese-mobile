@@ -69,6 +69,8 @@ export const ViewRestaurant = ({ restaurant, edit, setEdit, act }) => {
   const { user, favoriteRestaurants, toggleFavorite, reasons } =
     useContext(AppContext);
 
+  console.log(restaurant);
+
   const navigation = useNavigation();
   const [modal, setModal] = useState(false);
   const [selectedReasons, setSelectedReasons] = useState([]);

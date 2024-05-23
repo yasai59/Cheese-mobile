@@ -81,6 +81,7 @@ export const LikedRestaurantsScreen = () => {
           />
         ))}
       </View>
+      <View style={tw`h-10`}></View>
     </ScrollView>
   );
 };
