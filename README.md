@@ -26,3 +26,5 @@ npm i
 ```bash
 npm start
 ```
+
+Download the app: https://cheese.yasai59.com/downloads/cheese.apk
