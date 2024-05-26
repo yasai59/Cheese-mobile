@@ -13,6 +13,10 @@ import Animated, {
 } from "react-native-reanimated";
 
 const RestaurantDetails = ({ restaurant, activePhoto }) => {
+  const date = new Date(restaurant.creation_date);
+
+  const formatedDate = `${date.getDate()}/${date.getMonth()}/${date.getFullYear()}`;
+
   const details = [
     <>
       <Text style={tw`text-white text-2xl font-bold`}>{restaurant.name}</Text>
@@ -26,8 +30,7 @@ const RestaurantDetails = ({ restaurant, activePhoto }) => {
         <Text style={tw`font-bold`}>Phone:</Text> {restaurant.phone}
       </Text>
       <Text style={tw`text-white text-lg`}>
-        <Text style={tw`font-bold`}>In Cheese since:</Text>{" "}
-        {restaurant.creation_date}
+        <Text style={tw`font-bold`}>In Cheese since:</Text> {formatedDate}
       </Text>
     </>,
     <>

@@ -17,7 +17,7 @@ const Restaurant = ({
 }) => {
   return (
     <TouchableOpacity
-      style={tw`bg-base rounded-lg p-5 aspect-square`}
+      style={tw`bg-base rounded-lg p-5 aspect-square overflow-hidden`}
       onPress={onPress}
     >
       <TouchableOpacity style={tw`self-end`} onPress={onFavorite}>

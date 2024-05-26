@@ -9,6 +9,8 @@ import { AppContext } from "../../context/AppContext";
 import tw from "../../../twrnc";
 import { InvisibleInput, Option, OptionButton } from "../../components";
 import { resizeImage } from "../../helpers/resizeImage";
+import { Ionicons } from "@expo/vector-icons";
+import { View } from "react-native";
 
 export const ProfileScreen = () => {
   const { logout, user, setUser, token } = useContext(AppContext);
@@ -151,13 +153,16 @@ export const ProfileScreen = () => {
           style={tw`w-32 h-32 rounded-full self-center mt-5 mb-5`}
         />
       </TouchableOpacity>
-      <InvisibleInput
-        value={username}
-        onChange={(text) => {
-          setUsername(text);
-        }}
-        className={"text-3xl self-center mb-5"}
-      />
+      <View style={tw`flex-row justify-center gap-2`}>
+        <InvisibleInput
+          value={username}
+          onChange={(text) => {
+            setUsername(text);
+          }}
+          className={"text-3xl self-center mb-5"}
+        />
+        <Ionicons name="pencil" color={tw`text-light`["color"]} size={15} />
+      </View>
       <TouchableOpacity
         style={tw`${user.username === username ? "hidden" : "mb-5"}`}
         onPress={handleChangeUsername}
