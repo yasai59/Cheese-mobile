@@ -1,8 +1,6 @@
-import { Text } from "@rneui/base";
 import React from "react";
-import { TouchableOpacity, View } from "react-native";
+import { View } from "react-native";
 import tw from "../../twrnc";
-import { LinearGradient } from "expo-linear-gradient";
 import { Pill } from "./Pill";
 
 // an option should look like this:

@@ -6,6 +6,7 @@ import { Image } from "react-native";
 import axios from "axios";
 import { useNavigation } from "@react-navigation/native";
 import { AppContext } from "../../context/AppContext";
+import { StatusBar } from "expo-status-bar";
 
 const RestaurantItem = ({ restaurant }) => {
   const navigation = useNavigation();
@@ -28,7 +29,7 @@ const RestaurantItem = ({ restaurant }) => {
         }}
         style={tw`w-20 h-20 rounded-lg mx-2`}
       />
-      <View style={tw`flex-col justify-between`}>
+      <View style={tw`flex-col justify-between w-55`}>
         <Text style={tw`text-light text-2xl font-bold`}>{restaurant.name}</Text>
         <Text style={tw`text-light text-lg`}>{restaurant.address}</Text>
       </View>
@@ -55,6 +56,7 @@ export const LikedRestaurants = ({ restaurants, handleNext }) => {
           <Text style={tw`text-primary`}>Search more</Text>
         </TouchableOpacity>
       </View>
+      <StatusBar style="light" />
     </ScrollView>
   );
 };

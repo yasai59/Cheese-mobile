@@ -47,7 +47,7 @@ const RestaurantDetails = ({ restaurant, activePhoto }) => {
   return details[activePhoto % details.length];
 };
 
-export const RestaurantCard = ({ restaurant, goNext }) => {
+export const RestaurantCard = ({ restaurant, goNext, setMovement }) => {
   const svMove = useSharedValue(0);
   const svRotate = useSharedValue(0);
   const svOpacity = useSharedValue(1);
@@ -70,14 +70,17 @@ export const RestaurantCard = ({ restaurant, goNext }) => {
   const handleDrag = (event) => {
     svMove.value = event.dragTranslation.x;
     svRotate.value = event.dragTranslation.x / 10;
+    setMovement(event.dragTranslation.x);
   };
 
   const gotoZero = async () => {
     svMove.value = withSpring(0);
     svRotate.value = withSpring(0);
+    setMovement(0);
   };
 
   const handleGoNext = (like) => {
+    setMovement(0);
     if (like) {
       svMove.value = withSpring(600);
       svRotate.value = withSpring(60);

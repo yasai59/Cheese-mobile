@@ -7,11 +7,13 @@ import { Loading } from "../../components/Loading";
 import axios from "axios";
 import { LikedRestaurants } from "./LikedRestaurants";
 import { AppContext } from "../../context/AppContext";
+import { LinearGradient } from "expo-linear-gradient";
 
 export const Discover = () => {
   const [restaurants, setRestaurants] = useState([]);
   const [arrLiked, setArrLiked] = useState([]);
   const [final, setFinal] = useState(false);
+  const [movement, setMovement] = useState(0);
 
   const [activeRestaurant, setActiveRestaurant] = useState(0);
 
@@ -56,6 +58,8 @@ export const Discover = () => {
     });
   };
 
+  console.log(movement);
+
   if (final)
     return (
       <View
@@ -70,9 +74,40 @@ export const Discover = () => {
   return (
     <View
       style={{
-        ...tw`flex-1 bg-base-dark border-t border-base-light`,
+        ...tw`flex-1 bg-base-dark border-t border-base-light relative`,
       }}
     >
+      <View
+        style={{
+          ...tw`h-full w-20 absolute z-20 left-0 ${
+            movement == 0 ? "hidden" : ""
+          }`,
+          opacity: movement / -130,
+        }}
+      >
+        <LinearGradient
+          colors={[tw`text-secondary`["color"], "transparent"]}
+          style={tw`h-full w-full`}
+          start={{ x: 0, y: 0 }}
+          end={{ x: 1, y: 0 }}
+        />
+      </View>
+      <View
+        style={{
+          ...tw`h-full w-20 absolute z-20 right-0 ${
+            movement == 0 ? "hidden" : ""
+          }`,
+          opacity: movement / 130,
+        }}
+      >
+        <LinearGradient
+          colors={[tw`text-terciary`["color"], "transparent"]}
+          style={tw`h-full w-full`}
+          start={{ x: 1, y: 0 }}
+          end={{ x: 0, y: 0 }}
+        />
+      </View>
+
       {
         // If no restaurants are found, display a message
         restaurants == "No restaurants found" && (
@@ -94,6 +129,7 @@ export const Discover = () => {
         <RestaurantCard
           restaurant={restaurants[activeRestaurant]}
           goNext={goNext}
+          setMovement={setMovement}
         />
       )}
       <StatusBar style="light" />

@@ -1,8 +1,7 @@
-// lib/tailwind.js
 import { create } from "twrnc";
 
-// create the customized version...
-const tw = create(require(`./tailwind.config.js`)); // <- your path may differ
+// creem la configuració personalitzada de TailwindCSS...
+const tw = create(require(`./tailwind.config.js`)); // <- llegim l'arxiu
 
-// ... and then this becomes the main function your app uses
+// ... exportem la funció per que la resta de l'aplicació pugui fer servir la nostra configuració
 export default tw;

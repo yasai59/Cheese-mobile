@@ -12,7 +12,7 @@ import { GestureHandlerRootView } from "react-native-gesture-handler";
 // SplashScreen.preventAutoHideAsync();
 
 export default function App() {
-  axios.defaults.baseURL = "http://192.168.209.83:3000";
+  axios.defaults.baseURL = "https://apicheese.yasai59.com";
 
   const [fontsLoaded, fontError] = useFonts({
     Anton: require("./assets/fonts/Anton.ttf"),

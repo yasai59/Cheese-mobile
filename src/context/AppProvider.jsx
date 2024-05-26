@@ -57,7 +57,7 @@ export const AppProvider = ({ children }) => {
       const resTastes = await axios.get("/api/taste");
       setTastes(resTastes.data.tastes.map((t) => t.id));
 
-      if (resTastes.data.tastes.length === 0) navigate.navigate("Tastes");
+      if (resTastes.data.tastes.length === 0) navigate.navigate("TasteForm");
 
       const resRestrictions = await axios.get("/api/restriction");
       setRestrictions(resRestrictions.data.restrictions.map((r) => r.id));
